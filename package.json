@@ -1,0 +1,25 @@
+{
+  "name": "wasa.js",
+  "version": "0.0.1",
+  "description": "High level tooling for Web Audio API",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khdkhd/wasa.js.git"
+  },
+  "keywords": [
+    "Web",
+    "Audio",
+    "Synthetizer",
+    "Sequencer"
+  ],
+  "author": "khdkhd <com.acordier@gmail.com> (https://github.com/khdkhd)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/khdkhd/wasa.js/issues"
+  },
+  "homepage": "https://github.com/khdkhd/wasa.js#readme"
+}
