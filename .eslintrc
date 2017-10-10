@@ -1,0 +1,23 @@
+{
+  "extends": "eslint-config-airbnb",
+  "parserOptions": {
+    "ecmaVersion": 2016,
+    "sourceType": "module"
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "key-spacing": 0,
+    "linebreak-style": 0,
+    "import/extensions": 0,
+    "import/prefer-default-export": 0,
+    "import/no-extraneous-dependencies": 0,
+    "import/no-unresolved": ["error", { "ignore": ["@*"] }],
+    "indent": ["error", "tab"],
+    "no-tabs": 0,
+    "semi": ["error", "never"],
+    "yoda": "off"
+  }
+}

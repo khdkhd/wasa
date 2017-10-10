@@ -1,25 +1,78 @@
 {
-  "name": "wasa.js",
-  "version": "0.0.1",
-  "description": "High level tooling for Web Audio API",
-  "main": "index.js",
-  "scripts": {
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/khdkhd/wasa.js.git"
-  },
-  "keywords": [
-    "Web",
-    "Audio",
-    "Synthetizer",
-    "Sequencer"
-  ],
-  "author": "khdkhd <com.acordier@gmail.com> (https://github.com/khdkhd)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/khdkhd/wasa.js/issues"
-  },
-  "homepage": "https://github.com/khdkhd/wasa.js#readme"
+	"name": "wasa",
+	"version": "0.0.11",
+	"description": "High level tooling for Web Audio API",
+	"main": "dist/wasa.js",
+	"scripts": {
+		"test": "ava --verbose",
+		"build": "webpack --env=prod",
+		"prepublish": "npm run build"
+	},
+	"ava": {
+		"files": [
+			"src/**/*.spec.js"
+		],
+		"source": [
+			"src/**/*.js",
+			"!src/**/*.spec.js"
+		],
+		"require": [
+			"babel-register"
+		],
+		"babel": {
+			"presets": [
+				"env",
+				"@ava/stage-4"
+			],
+			"plugins": [
+				["transform-runtime", { "polyfill": false }]
+			]
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/khdkhd/wasa.js.git"
+	},
+	"keywords": [
+		"Web",
+		"Audio",
+		"Synthetizer",
+		"Sequencer"
+	],
+	"author": "khdkhd <com.acordier@gmail.com> (https://github.com/khdkhd)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/khdkhd/wasa.js/issues"
+	},
+	"homepage": "https://github.com/khdkhd/wasa.js#readme",
+	"devDependencies": {
+		"@ava/babel-preset-stage-4": "^1.1.0",
+		"ava": "^0.22.0",
+		"babel-eslint": "^7.2.3",
+		"babel-loader": "^7.0.0",
+		"babel-plugin-transform-async-to-generator": "^6.24.1",
+		"babel-plugin-transform-runtime": "^6.23.0",
+		"babel-polyfill": "^6.26.0",
+		"babel-preset-env": "^1.6.0",
+		"babel-preset-es2017": "^6.24.1",
+		"babel-preset-react": "^6.24.1",
+		"babel-preset-stage-3": "^6.24.1",
+		"babel-register": "^6.26.0",
+		"clean-webpack-plugin": "^0.1.17",
+		"eslint": "^3.19.0",
+		"eslint-config-airbnb": "^15",
+		"eslint-config-webpack": "^1.2.1",
+		"eslint-loader": "^1.7.1",
+		"eslint-plugin-import": "^2",
+		"eslint-plugin-jsx-a11y": "^5",
+		"eslint-plugin-react": "^7",
+		"sinon": "^3.2.1",
+		"webpack": "^3.6.0"
+	},
+	"dependencies": {
+		"babel-preset-2017": "^0.0.0",
+		"ramda": "^0.24.1",
+		"rxjs": "^5.4.3",
+		"worker-timer": "^1.1.0"
+	}
 }
