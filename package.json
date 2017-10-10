@@ -1,6 +1,6 @@
 {
 	"name": "wasa",
-	"version": "0.0.11",
+	"version": "0.0.12",
 	"description": "High level tooling for Web Audio API",
 	"main": "dist/wasa.js",
 	"scripts": {
