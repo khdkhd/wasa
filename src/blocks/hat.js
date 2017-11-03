@@ -46,5 +46,8 @@ export const Hat = ({ audioContext }) => {
 			duration = value
 			return this
 		},
+		getDuration() {
+			return duration
+		}
 	}
 }

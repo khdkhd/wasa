@@ -57,9 +57,15 @@ export const Snare = ({ audioContext }) => {
 			duration = value
 			return this
 		},
+		getDuration() {
+			return duration
+		},
 		setFrequency(value) {
 			frequency = value
 			return this
 		},
+		getFrequency() {
+			return frequency
+		}
 	}
 }

@@ -43,17 +43,26 @@ export const Kick = ({ audioContext }) => {
 			output.connect(input)
 			return { connect }
 		},
-		setFinalFreq(value) {
+		setFinalFrequency(value) {
 			finalFreq = value
 			return this
 		},
-		setFreq(value) {
+		getFinalFrequency() {
+			return finalFreq
+		},
+		setFrequency(value) {
 			freq = value
 			return this
+		},
+		getFrequency() {
+			return freq
 		},
 		setDuration(value) {
 			duration = value
 			return this
+		},
+		getDuration() {
+			return duration
 		},
 		getOutputGain() {
 			return output.gain
