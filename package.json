@@ -1,6 +1,6 @@
 {
 	"name": "wasa",
-	"version": "0.0.12",
+	"version": "0.0.13",
 	"description": "High level tooling for Web Audio API",
 	"main": "dist/wasa.js",
 	"scripts": {
@@ -25,7 +25,12 @@
 				"@ava/stage-4"
 			],
 			"plugins": [
-				["transform-runtime", { "polyfill": false }]
+				[
+					"transform-runtime",
+					{
+						"polyfill": false
+					}
+				]
 			]
 		}
 	},
