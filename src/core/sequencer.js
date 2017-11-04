@@ -1,6 +1,6 @@
 import WorkerTimer from 'worker-timer'
 
-export const Sequencer = ({ audioContext }) => {
+export const Sequencer = (audioContext) => {
 	/* time values */
 	let division = 4 // ticks per quarter note
 	let startTime = 0 // start time
