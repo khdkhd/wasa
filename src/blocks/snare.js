@@ -1,4 +1,4 @@
-export const Snare = ({ audioContext }) => {
+export const Snare = (audioContext) => {
 	const bufferSize = audioContext.sampleRate
 	const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate)
 	const o = buffer.getChannelData(0)
@@ -66,6 +66,9 @@ export const Snare = ({ audioContext }) => {
 		},
 		getFrequency() {
 			return frequency
-		}
+		},
+		setOutputGain(value) {
+			output.gain.value = value
+		},
 	}
 }

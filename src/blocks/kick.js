@@ -1,4 +1,4 @@
-export const Kick = ({ audioContext }) => {
+export const Kick = (audioContext) => {
 	const output = audioContext.createGain()
 	const gains = [
 		audioContext.createGain(),

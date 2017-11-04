@@ -1,4 +1,4 @@
-export const Hat = ({ audioContext }) => {
+export const Hat = (audioContext) => {
 	const ratios = [2, 3, 4.16, 5.43, 6.79, 8.21]
 	const bandpass = audioContext.createBiquadFilter()
 	const output = audioContext.createGain()
