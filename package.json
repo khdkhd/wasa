@@ -4,6 +4,7 @@
 	"description": "High level tooling for Web Audio API",
 	"main": "dist/wasa.js",
 	"scripts": {
+		"lint": "eslint .",
 		"test": "nyc ava --verbose",
 		"coverage": "nyc report --reporter=text-lcov | coveralls",
 		"build": "webpack --env=prod",
