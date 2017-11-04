@@ -1,6 +1,6 @@
 {
 	"name": "wasa",
-	"version": "0.0.12",
+	"version": "0.0.14",
 	"description": "High level tooling for Web Audio API",
 	"main": "dist/wasa.js",
 	"scripts": {
@@ -25,13 +25,18 @@
 				"@ava/stage-4"
 			],
 			"plugins": [
-				["transform-runtime", { "polyfill": false }]
+				[
+					"transform-runtime",
+					{
+						"polyfill": false
+					}
+				]
 			]
 		}
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/khdkhd/wasa.js.git"
+		"url": "git+https://github.com/khdkhd/wasa"
 	},
 	"keywords": [
 		"Web",
@@ -42,9 +47,9 @@
 	"author": "khdkhd <com.acordier@gmail.com> (https://github.com/khdkhd)",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/khdkhd/wasa.js/issues"
+		"url": "https://github.com/khdkhd/wasa/issues"
 	},
-	"homepage": "https://github.com/khdkhd/wasa.js#readme",
+	"homepage": "https://github.com/khdkhd/wasa#readme",
 	"devDependencies": {
 		"@ava/babel-preset-stage-4": "^1.1.0",
 		"ava": "^0.22.0",
