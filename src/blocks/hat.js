@@ -48,6 +48,6 @@ export const Hat = (audioContext) => {
 		},
 		getDuration() {
 			return duration
-		}
+		},
 	}
 }
