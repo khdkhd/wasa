@@ -1,6 +1,41 @@
 import test from 'ava'
-import { getFrequency } from '.'
+import { Note, getFrequency, DURATIONS } from '.'
 
+test('Note factory creates an object', (t) => {
+	const note = Note({
+		note: 'A4',
+		octave: 3,
+		duration: DURATIONS.WHOLE,
+	})
+	t.true(typeof note === 'object')
+})
+
+test('Note factory creates an object with a note getter', (t) => {
+	const note = Note({
+		note: 'A4',
+		octave: 3,
+		duration: DURATIONS.WHOLE,
+	})
+	t.is('A4', note.getNote())
+})
+
+test('Note factory creates an object with an octave getter', (t) => {
+	const note = Note({
+		note: 'A4',
+		octave: 3,
+		duration: DURATIONS.WHOLE,
+	})
+	t.is(3, note.getOctave())
+})
+
+test('Note factory creates an object with a duration getter', (t) => {
+	const note = Note({
+		note: 'A4',
+		octave: 3,
+		duration: DURATIONS.WHOLE,
+	})
+	t.is(DURATIONS.WHOLE, note.getDuration())
+})
 test('Note C3 converts to 130.81 Hz', (t) => {
 	const frequency = getFrequency('C', 3)
 	t.is(130.81, Number(frequency.toFixed(2)))

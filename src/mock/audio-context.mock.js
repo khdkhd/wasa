@@ -14,6 +14,7 @@ export const AudioContextMock = (sandbox) => {
 		setValueAtTime: sandbox.spy(),
 		cancelScheduledValues: sandbox.spy(),
 		linearRampToValueAtTime: sandbox.spy(),
+		exponentialRampToValueAtTime: sandbox.spy(),
 		value: undefined,
 	})
 
@@ -26,6 +27,7 @@ export const AudioContextMock = (sandbox) => {
 		frequency: AudioParam(),
 		connect: sandbox.spy(),
 		start: sandbox.spy(),
+		stop: sandbox.spy(),
 	})
 
 	const createChannelMerger = () => ({
