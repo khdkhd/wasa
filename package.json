@@ -36,6 +36,13 @@
 			]
 		}
 	},
+	"nyc": {
+		"exclude": [
+			"**/*.spec.js",
+			"**/*.mock.js",
+			"build"
+		]
+	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/khdkhd/wasa"
