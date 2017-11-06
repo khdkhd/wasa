@@ -1,3 +1,5 @@
+import { CrossFader } from './cross-fader'
+
 export const Snare = (audioContext) => {
 	const bufferSize = audioContext.sampleRate
 	const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate)
@@ -10,12 +12,14 @@ export const Snare = (audioContext) => {
 	const noiseGain = audioContext.createGain()
 	const filter = audioContext.createBiquadFilter()
 	const oscGain = audioContext.createGain()
+	const crossFader = CrossFader(audioContext)
 
 	filter.type = 'highpass'
 	filter.frequency.value = 1000
 	filter.connect(noiseGain)
-	noiseGain.connect(output)
-	oscGain.connect(output)
+	crossFader.setLeftInput(noiseGain)
+	crossFader.setRightInput(oscGain)
+	crossFader.connect({ input: output })
 
 	let osc
 	let noise
