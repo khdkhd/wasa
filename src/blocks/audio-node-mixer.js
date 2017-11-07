@@ -1,4 +1,4 @@
-export const CrossFader = (audioContext) => {
+export const AudioNodeMixer = (audioContext) => {
 	const outputGainNode = audioContext.createGain()
 	const leftGainNode = audioContext.createGain()
 	const rightGainNode = audioContext.createGain()
