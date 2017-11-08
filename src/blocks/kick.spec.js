@@ -12,22 +12,36 @@ test('Kick factory returns object', (t) => {
 test('Kick factory returns object with a duration getter and setter', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	const kick = Kick(audioContext)
-	kick.setDuration(1)
-	t.is(1, kick.getDuration())
+	kick.setDurationValue(1)
+	t.is(1, kick.getDurationValue())
 })
 
 test('Kick factory returns object with a frequency getter and setter', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	const kick = Kick(audioContext)
-	kick.setFrequency(440)
-	t.is(440, kick.getFrequency())
+	kick.setFrequencyValue(440)
+	t.is(440, kick.getFrequencyValue())
 })
 
 test('Kick factory returns object with a finalFrequency getter and setter', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	const kick = Kick(audioContext)
-	kick.setFinalFrequency(220)
-	t.is(220, kick.getFinalFrequency())
+	kick.setFinalFrequencyValue(220)
+	t.is(220, kick.getFinalFrequencyValue())
+})
+
+test('Kick factory returns object with an outputGain getter and setter', (t) => {
+	const audioContext = AudioContextMock(sinon.sandbox.create())
+	const kick = Kick(audioContext)
+	kick.setOutputGainValue(0.25)
+	t.is(0.25, kick.getOutputGainValue())
+})
+
+test('Kick factory returns object with an attack getter and setter', (t) => {
+	const audioContext = AudioContextMock(sinon.sandbox.create())
+	const kick = Kick(audioContext)
+	kick.setAttackValue(0.25)
+	t.is(0.25, kick.getAttackValue())
 })
 
 test('Kick connect method returns an object with a connect method', (t) => {
