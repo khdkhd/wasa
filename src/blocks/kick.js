@@ -1,16 +1,23 @@
 export const Kick = (audioContext) => {
 	const output = audioContext.createGain()
+	output.gain.value = 0.5
 	const gains = [
 		audioContext.createGain(),
 		audioContext.createGain(),
 	]
+	const filter = audioContext.createBiquadFilter()
+	filter.type = 'lowshelf'
+	filter.frequency.value = 150
+	filter.gain.value = -0.9
 	gains.forEach((gain) => {
-		gain.connect(output)
+		gain.connect(filter)
 	})
+	filter.connect(output)
 	let oscs = []
 	let freq = 100
 	let finalFreq = 1
 	let duration = 0.25
+	let attack = 0.01
 
 	return {
 		noteOn(time = audioContext.currentTime, velocity = 1) {
@@ -28,7 +35,7 @@ export const Kick = (audioContext) => {
 				osc.stop(time + duration)
 			})
 			gains.forEach((gain) => {
-				gain.gain.setValueAtTime(1 * velocity, time)
+				gain.gain.linearRampToValueAtTime(0.5 * velocity, time + attack)
 				gain.gain.exponentialRampToValueAtTime(0.001, time + duration)
 			})
 		},
@@ -43,29 +50,40 @@ export const Kick = (audioContext) => {
 			output.connect(input)
 			return { connect }
 		},
-		setFinalFrequency(value) {
+		setFinalFrequencyValue(value) {
 			finalFreq = value
 			return this
 		},
-		getFinalFrequency() {
+		getFinalFrequencyValue() {
 			return finalFreq
 		},
-		setFrequency(value) {
+		setFrequencyValue(value) {
 			freq = value
 			return this
 		},
-		getFrequency() {
+		getFrequencyValue() {
 			return freq
 		},
-		setDuration(value) {
+		setDurationValue(value) {
 			duration = value
 			return this
 		},
-		getDuration() {
+		getDurationValue() {
 			return duration
 		},
-		getOutputGain() {
-			return output.gain
+		setOutputGainValue(value) {
+			output.gain.value = value
+			return this
+		},
+		getOutputGainValue() {
+			return output.gain.value
+		},
+		getAttackValue() {
+			return attack
+		},
+		setAttackValue(value) {
+			attack = value
+			return this
 		},
 	}
 }
