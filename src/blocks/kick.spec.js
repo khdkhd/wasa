@@ -44,6 +44,20 @@ test('Kick factory returns object with an attack getter and setter', (t) => {
 	t.is(0.25, kick.getAttackValue())
 })
 
+test('Kick factory returns object with an output gain getter and setter', (t) => {
+	const audioContext = AudioContextMock(sinon.sandbox.create())
+	const kick = Kick(audioContext)
+	kick.setOutputGainValue(0.25)
+	t.is(0.25, kick.getOutputGainValue())
+})
+
+test('Kick factory returns object with an output gain getter and setter', (t) => {
+	const audioContext = AudioContextMock(sinon.sandbox.create())
+	const kick = Kick(audioContext)
+	kick.setIsSubOscEnabled(true)
+	t.is(true, kick.getIsSubOscEnabled())
+})
+
 test('Kick connect method returns an object with a connect method', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	const kick = Kick(audioContext)
