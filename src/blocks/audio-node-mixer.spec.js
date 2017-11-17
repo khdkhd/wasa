@@ -9,16 +9,10 @@ test('AudioNodeMixer factory creates an object', (t) => {
 	t.true(typeof audioNodeMixer === 'object')
 })
 
-test('AudioNodeMixer factory creates an object with a fadeLeft method', (t) => {
+test('AudioNodeMixer factory creates an object with a fade method', (t) => {
 	const audioContext = AudioContextMock(sinon.createSandbox())
 	const audioNodeMixer = AudioNodeMixer(audioContext)
-	t.true(typeof audioNodeMixer.fadeLeft === 'function')
-})
-
-test('AudioNodeMixer factory creates an object with a fadeRight method', (t) => {
-	const audioContext = AudioContextMock(sinon.createSandbox())
-	const audioNodeMixer = AudioNodeMixer(audioContext)
-	t.true(typeof audioNodeMixer.fadeRight === 'function')
+	t.true(typeof audioNodeMixer.fade === 'function')
 })
 
 test('AudioNodeMixer connect method returns an object with a connect method', (t) => {
@@ -59,12 +53,12 @@ test('AudioNodeMixer connect method returns an object with a right input setter'
 	t.true(typeof audioNodeMixer.setRightInput(audioNodeMixerRightInput) === 'object')
 })
 
-test('AudioNodeMixer fadeRight method affects audioContext gains', (t) => {
+test('AudioNodeMixer fade method affects audioContext gains', (t) => {
 	const audioContext = AudioContextMock(sinon.createSandbox())
 	const audioNodeMixer = AudioNodeMixer(audioContext)
 	const gainValues = audioContext.getGainNodes()
 		.map(gainNode => gainNode.gain.value)
-	audioNodeMixer.fadeRight(1)
+	audioNodeMixer.fade(1)
 	let modified = false
 	audioContext.getGainNodes()
 		.map(gainNode => gainNode.gain.value)
@@ -75,19 +69,4 @@ test('AudioNodeMixer fadeRight method affects audioContext gains', (t) => {
 		})
 	t.true(modified)
 })
-test('AudioNodeMixer fadeLeft method affects audioContext gains', (t) => {
-	const audioContext = AudioContextMock(sinon.createSandbox())
-	const audioNodeMixer = AudioNodeMixer(audioContext)
-	const gainValues = audioContext.getGainNodes()
-		.map(gainNode => gainNode.gain.value)
-	audioNodeMixer.fadeLeft(1)
-	let modified = false
-	audioContext.getGainNodes()
-		.map(gainNode => gainNode.gain.value)
-		.forEach((value, i) => {
-			if (value !== gainValues[i]) {
-				modified = true
-			}
-		})
-	t.true(modified)
-})
+

@@ -28,7 +28,20 @@ export const AudioContextMock = (sandbox) => {
 		connect: sandbox.spy(),
 		start: sandbox.spy(),
 		stop: sandbox.spy(),
+		setPeriodicWave: sandbox.spy(),
 	})
+
+	const createBufferSource = () => ({
+		connect: sandbox.spy(),
+		start: sandbox.spy(),
+		stop: sandbox.spy(),
+	})
+
+	const createBuffer = () => ({
+		getChannelData: sandbox.spy(),
+	})
+
+	const createPeriodicWave = () => ({})
 
 	const createChannelMerger = () => ({
 		connect: sandbox.spy(),
@@ -54,10 +67,14 @@ export const AudioContextMock = (sandbox) => {
 		},
 		createBiquadFilter,
 		createChannelMerger,
+		createBufferSource,
+		createBuffer,
+		createPeriodicWave,
 	}
 
 
-	return Object.assign({},
+	return Object.assign(
+		{},
 		Object.keys(AudioContextMethods).reduce((a, k) => {
 			const c = Object.create(null)
 			c[k] = sandbox.spy(AudioContextMethods, k)
@@ -71,6 +88,7 @@ export const AudioContextMock = (sandbox) => {
 				return gains
 			},
 			currentTime,
-		})
+		},
+	)
 }
 

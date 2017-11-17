@@ -5,15 +5,13 @@ export const AudioNodeMixer = (audioContext) => {
 
 	leftGainNode.connect(outputGainNode)
 	rightGainNode.connect(outputGainNode)
+	leftGainNode.gain.value = 0.5
+	rightGainNode.gain.value = 0.5
 
 	return {
-		fadeRight(value) {
-			leftGainNode.gain.value -= value
-			rightGainNode.gain.value += value
-		},
-		fadeLeft(value) {
-			rightGainNode.gain.value -= value
-			leftGainNode.gain.value += value
+		fade(value) {
+			leftGainNode.gain.value = 1 - Math.abs(value)
+			rightGainNode.gain.value = Math.abs(value)
 		},
 		setLeftInput(audioNode) {
 			audioNode.connect(leftGainNode)

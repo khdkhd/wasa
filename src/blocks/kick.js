@@ -1,4 +1,8 @@
-export const Kick = (audioContext) => {
+// @flow
+import type { AudioContext } from '../flow/i-audio-context'
+
+
+export const Kick = (audioContext: AudioContext): Object => {
 	const output = audioContext.createGain()
 	const gains = [
 		audioContext.createGain(),
