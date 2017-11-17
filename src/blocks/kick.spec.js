@@ -51,7 +51,7 @@ test('Kick factory returns object with an output gain getter and setter', (t) =>
 	t.is(0.25, kick.getOutputGainValue())
 })
 
-test('Kick factory returns object with an output gain getter and setter', (t) => {
+test('Kick factory returns object with an sub osc enabled getter and setter', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	const kick = Kick(audioContext)
 	kick.setIsSubOscEnabled(true)

@@ -2,7 +2,8 @@
 	"presets": [
 	  "es2017",
 	  "@ava/stage-4",
-	  "stage-3"
+	  "stage-3",
+	  "flow"
 	],
 	"plugins": [
 		["transform-runtime", { "polyfill": false }]

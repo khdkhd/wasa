@@ -1,10 +1,10 @@
-// @Flow
+// @flow
 export interface AudioParam {
 
-    +defaultValue: number;
-    +maxValue: number;
-    +minValue: number;
-    value: number;
+    defaultValue: number;
+    maxValue: number;
+    minValue: number;
+    +value: number;
 
     setValueAtTime(value: number, time: number): void;
     linearRampToValueAtTime(value: number, time: number): void;

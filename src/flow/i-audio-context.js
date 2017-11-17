@@ -1,5 +1,5 @@
-// @Flow
-import type {AudioNode} from "./i-audio-node";
+// @flow
+import type { AudioNode } from './i-audio-node'
 
 export interface AudioContext {
     createGain(): AudioNode;

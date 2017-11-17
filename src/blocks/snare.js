@@ -1,6 +1,6 @@
 import { AudioNodeMixer } from './audio-node-mixer'
-
-export const Snare = (audioContext) => {
+// @flow
+export const Snare = (audioContext: Object): Object => {
 	const bufferSize = audioContext.sampleRate
 	const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate)
 	const o = buffer.getChannelData(0)
@@ -10,38 +10,44 @@ export const Snare = (audioContext) => {
 
 	const output = audioContext.createGain()
 	const noiseGain = audioContext.createGain()
-	const filter = audioContext.createBiquadFilter()
+	const noiseFilter = audioContext.createBiquadFilter()
 	const oscGain = audioContext.createGain()
-	const crossFader = AudioNodeMixer(audioContext)
-
-	filter.type = 'highpass'
-	filter.frequency.value = 1000
-	filter.connect(noiseGain)
-	crossFader.setLeftInput(noiseGain)
-	crossFader.setRightInput(oscGain)
-	crossFader.connect({ input: output })
+	const nodeMixer = AudioNodeMixer(audioContext)
 
 	let osc
 	let noise
 	let duration = 0.25
-	let frequency = 80
+	let frequency = 100
+	let oscMixValue = 0.5
+	let noiseFilterValue = 1000
+
+	const real = new Float32Array([0, 0, 1, 0, 1])
+	const imag = new Float32Array(real.length)
+	const customWave = audioContext.createPeriodicWave(real, imag)
+
+	noiseFilter.type = 'lowpass'
+	noiseFilter.frequency.value = noiseFilterValue
+	noiseFilter.connect(noiseGain)
+	nodeMixer.setLeftInput(noiseGain)
+	nodeMixer.setRightInput(oscGain)
+	nodeMixer.connect({ input: output })
 
 	return {
 		noteOn(time = audioContext.currentTime, velocity = 1) {
 			osc = audioContext.createOscillator()
-			osc.type = 'triangle'
+			osc.setPeriodicWave(customWave)
 			osc.connect(oscGain)
 			noise = audioContext.createBufferSource()
 			noise.buffer = buffer
-			noise.connect(filter)
-			noiseGain.gain.setValueAtTime(1 * velocity, time)
-			noiseGain.gain.exponentialRampToValueAtTime(0.01, time + (duration - 0.1))
+			noise.connect(noiseFilter)
+			noiseGain.gain.setValueAtTime(0.5 * velocity, time)
+			noiseGain.gain.exponentialRampToValueAtTime(1E-10, time + duration)
 			noise.start(time)
 			osc.frequency.setValueAtTime(frequency, time)
-			oscGain.gain.setValueAtTime(1 * velocity, time)
-			oscGain.gain.exponentialRampToValueAtTime(0.01, time + (duration - 0.1))
+			oscGain.gain.setValueAtTime(0.5 * velocity, time)
+			oscGain.gain.exponentialRampToValueAtTime(1E-10, time + 0.15)
 			osc.start(time)
-			osc.stop(time + duration)
+			osc.stop(time + 0.15)
 			noise.stop(time + duration)
 		},
 		noteOff(time = audioContext.currentTime + duration) {
@@ -57,22 +63,42 @@ export const Snare = (audioContext) => {
 			output.connect(input)
 			return { connect }
 		},
-		setDuration(value) {
+		setDurationValue(value) {
 			duration = value
 			return this
 		},
-		getDuration() {
+		getDurationValue() {
 			return duration
 		},
-		setFrequency(value) {
+		setFrequencyValue(value) {
 			frequency = value
 			return this
 		},
-		getFrequency() {
+		getFrequencyValue() {
 			return frequency
 		},
-		setOutputGain(value) {
+		setOscMixValue(value) {
+			oscMixValue = value
+			nodeMixer.fade(oscMixValue - 0.5)
+			return this
+		},
+		getOscMixValue() {
+			return oscMixValue
+		},
+		setNoiseFilterValue(value) {
+			noiseFilterValue = value
+			noiseFilter.frequency.value = value
+			return this
+		},
+		getNoiseFilterValue() {
+			return noiseFilterValue
+		},
+		setOutputGainValue(value) {
 			output.gain.value = value
+			return this
+		},
+		getOutputGainValue() {
+			return output.gain.value
 		},
 	}
 }
