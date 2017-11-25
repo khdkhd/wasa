@@ -86,13 +86,6 @@ export const Kick = (audioContext) => {
 		getOutputGainValue() {
 			return output.gain.value
 		},
-		getAttackValue() {
-			return attack
-		},
-		setAttackValue(value) {
-			attack = value
-			return this
-		},
 		getIsSubOscEnabled() {
 			return subOscEnabled
 		},

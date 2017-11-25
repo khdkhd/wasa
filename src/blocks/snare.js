@@ -23,7 +23,6 @@ export const Snare = (audioContext) => {
 
 	const real = new Float32Array([0, 0, 1, 0, 1])
 	const imag = new Float32Array([0, 0, 0, 0, 0])
-	console.log(imag)
 	const customWave = audioContext.createPeriodicWave(real, imag)
 
 	noiseFilter.type = 'lowpass'
