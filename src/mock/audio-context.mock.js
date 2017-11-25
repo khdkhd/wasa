@@ -73,8 +73,7 @@ export const AudioContextMock = (sandbox) => {
 	}
 
 
-	return Object.assign(
-		{},
+	return Object.assign({},
 		Object.keys(AudioContextMethods).reduce((a, k) => {
 			const c = Object.create(null)
 			c[k] = sandbox.spy(AudioContextMethods, k)
@@ -88,7 +87,5 @@ export const AudioContextMock = (sandbox) => {
 				return gains
 			},
 			currentTime,
-		},
-	)
+		})
 }
-

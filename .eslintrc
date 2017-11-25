@@ -1,6 +1,5 @@
 {
-  "extends": ["airbnb", "plugin:flowtype/recommended"],
-  "plugins": ["flowtype"],
+  "extends": ["eslint-config-airbnb"],
   "parserOptions": {
     "ecmaVersion": 2016,
     "sourceType": "module"

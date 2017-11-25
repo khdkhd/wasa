@@ -1,6 +1,6 @@
 import { AudioNodeMixer } from './audio-node-mixer'
-// @flow
-export const Snare = (audioContext: Object): Object => {
+
+export const Snare = (audioContext) => {
 	const bufferSize = audioContext.sampleRate
 	const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate)
 	const o = buffer.getChannelData(0)
@@ -22,7 +22,7 @@ export const Snare = (audioContext: Object): Object => {
 	let noiseFilterValue = 1000
 
 	const real = new Float32Array([0, 0, 1, 0, 1])
-	const imag = new Float32Array(real.length)
+	const imag = new Float32Array([0, 0, 0, 0, 0])
 	const customWave = audioContext.createPeriodicWave(real, imag)
 
 	noiseFilter.type = 'lowpass'

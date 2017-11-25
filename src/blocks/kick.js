@@ -1,30 +1,25 @@
-// @flow
-import type { AudioContext } from '../flow/i-audio-context'
-
-
-export const Kick = (audioContext: AudioContext): Object => {
+export const Kick = (audioContext) => {
 	const output = audioContext.createGain()
+	output.gain.value = 1
 	const gains = [
 		audioContext.createGain(),
 		audioContext.createGain(),
 	]
 	const filter = audioContext.createBiquadFilter()
-	filter.type = 'lowshelf'
-	filter.frequency.value = 50
-	filter.gain.value = -1
-	gains.forEach((gain) => {
-		gain.connect(filter)
-		gain.gain.setValueAtTime(1E-10, 0)
-	})
+	filter.type = 'allpass'
+	filter.frequency.value = 20
+	filter.gain.value = -50
 	filter.connect(output)
 	let oscs = []
 	let subOscEnabled = true
+	gains.forEach((gain) => {
+		gain.connect(filter)
+	})
 	let mainOsc
 	let subOsc
 	let freq = 100
 	let finalFreq = 0.01
 	let duration = 0.25
-	let attack = 0.01
 
 	return {
 		noteOn(time = audioContext.currentTime, velocity = 1) {
@@ -37,13 +32,13 @@ export const Kick = (audioContext: AudioContext): Object => {
 			]
 			if (subOscEnabled) {
 				subOsc = audioContext.createOscillator()
-				subOsc.type = 'triangle'
-				subOsc.frequency.setValueAtTime(freq / 2, time)
+				subOsc.type = 'sine'
+				subOsc.frequency.setValueAtTime(freq / 1.5, time)
 				subOsc.frequency.exponentialRampToValueAtTime(finalFreq / 2, time + duration)
 				oscs.push(subOsc)
 			}
 			gains.forEach((gain) => {
-				gain.gain.linearRampToValueAtTime((1 / oscs.length) * velocity, time + attack)
+				gain.gain.linearRampToValueAtTime((1 / oscs.length) * velocity, time)
 				gain.gain.exponentialRampToValueAtTime(1E-10, time + duration)
 			})
 			oscs.forEach((osc, i) => {
@@ -90,13 +85,6 @@ export const Kick = (audioContext: AudioContext): Object => {
 		},
 		getOutputGainValue() {
 			return output.gain.value
-		},
-		getAttackValue() {
-			return attack
-		},
-		setAttackValue(value) {
-			attack = value
-			return this
 		},
 		getIsSubOscEnabled() {
 			return subOscEnabled
