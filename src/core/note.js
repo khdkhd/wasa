@@ -37,7 +37,7 @@ export const frequencyFromSymbol = (note, octave) => {
  * @param {number} midiValue - Midi value (0 to 127) of the note
  */
 export const frequencyFromMidi = (tuning = 440, midiValue) => {
-	if(isNil(midiValue)) {
+	if (isNil(midiValue)) {
 		return _ => frequencyFromMidi(tuning, _)
 	}
 	if (midiValue >= 0 && midiValue <= 127) {
