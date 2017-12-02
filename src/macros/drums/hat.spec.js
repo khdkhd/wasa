@@ -1,7 +1,7 @@
 import test from 'ava'
 import sinon from 'sinon'
 import { Hat } from './hat'
-import { AudioContextMock } from '../mock/audio-context.mock'
+import { AudioContextMock } from '../../mock/audio-context.mock'
 
 test('Hat factory returns object', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
@@ -9,21 +9,21 @@ test('Hat factory returns object', (t) => {
 	t.true(typeof hat === 'object')
 })
 
+test('Hat connect method returns an object with a connect method', (t) => {
+	const audioContext = AudioContextMock(sinon.sandbox.create())
+	const hat = Hat(audioContext)
+	const nextInChain = {
+		getInput: () => audioContext.createGain(),
+		connect() {},
+	}
+	t.true(typeof hat.connect(nextInChain).connect === 'function')
+})
+
 test('Hat factory returns object with a duration getter and setter', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	const hat = Hat(audioContext)
 	hat.setDuration(1)
 	t.is(1, hat.getDuration())
-})
-
-test('Hat connect method returns an object with a connect method', (t) => {
-	const audioContext = AudioContextMock(sinon.sandbox.create())
-	const hat = Hat(audioContext)
-	const nextInChain = {
-		input: audioContext.createGain(),
-		connect() {},
-	}
-	t.true(typeof hat.connect(nextInChain).connect === 'function')
 })
 
 test('Hat noteOn method call create oscillators in the audio context', (t) => {

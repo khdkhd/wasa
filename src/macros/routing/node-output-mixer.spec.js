@@ -1,61 +1,61 @@
 import test from 'ava'
 import sinon from 'sinon'
-import { AudioNodeMixer } from './audio-node-mixer'
-import { AudioContextMock } from '../mock/audio-context.mock'
+import { NodeOutputMixer } from './node-output-mixer'
+import { AudioContextMock } from '../../mock/audio-context.mock'
 
-test('AudioNodeMixer factory creates an object', (t) => {
+test('NodeOutputMixer factory creates an object', (t) => {
 	const audioContext = AudioContextMock(sinon.createSandbox())
-	const audioNodeMixer = AudioNodeMixer(audioContext)
+	const audioNodeMixer = NodeOutputMixer(audioContext)
 	t.true(typeof audioNodeMixer === 'object')
 })
 
-test('AudioNodeMixer factory creates an object with a fade method', (t) => {
+test('NodeOutputMixer factory creates an object with a fade method', (t) => {
 	const audioContext = AudioContextMock(sinon.createSandbox())
-	const audioNodeMixer = AudioNodeMixer(audioContext)
+	const audioNodeMixer = NodeOutputMixer(audioContext)
 	t.true(typeof audioNodeMixer.fade === 'function')
 })
 
-test('AudioNodeMixer connect method returns an object with a connect method', (t) => {
+test('NodeOutputMixer connect method returns an object with a connect method', (t) => {
 	const audioContext = AudioContextMock(sinon.createSandbox())
-	const audioNodeMixer = AudioNodeMixer(audioContext)
+	const audioNodeMixer = NodeOutputMixer(audioContext)
 	const nextInChain = {
-		input: audioContext.createGain(),
+		getInput: () => audioContext.createGain(),
 		connect() {},
 	}
 	t.true(typeof audioNodeMixer.connect(nextInChain).connect === 'function')
 })
 
-test('AudioNodeMixer connect method returns an object with a left gain node getter', (t) => {
+test('NodeOutputMixer connect method returns an object with a left gain node getter', (t) => {
 	const audioContext = AudioContextMock(sinon.createSandbox())
-	const audioNodeMixer = AudioNodeMixer(audioContext)
+	const audioNodeMixer = NodeOutputMixer(audioContext)
 	const leftGainNode = audioNodeMixer.getLeftGainNode()
 	t.true(typeof leftGainNode === 'object')
 })
 
-test('AudioNodeMixer connect method returns an object with a right gain node getter', (t) => {
+test('NodeOutputMixer connect method returns an object with a right gain node getter', (t) => {
 	const audioContext = AudioContextMock(sinon.createSandbox())
-	const audioNodeMixer = AudioNodeMixer(audioContext)
+	const audioNodeMixer = NodeOutputMixer(audioContext)
 	const rightGainNode = audioNodeMixer.getRightGainNode()
 	t.true(typeof rightGainNode === 'object')
 })
 
-test('AudioNodeMixer connect method returns an object with a left input setter', (t) => {
+test('NodeOutputMixer connect method returns an object with a left input setter', (t) => {
 	const audioContext = AudioContextMock(sinon.createSandbox())
-	const audioNodeMixer = AudioNodeMixer(audioContext)
+	const audioNodeMixer = NodeOutputMixer(audioContext)
 	const audioNodeMixerLeftInput = audioContext.createOscillator()
 	t.true(typeof audioNodeMixer.setLeftInput(audioNodeMixerLeftInput) === 'object')
 })
 
-test('AudioNodeMixer connect method returns an object with a right input setter', (t) => {
+test('NodeOutputMixer connect method returns an object with a right input setter', (t) => {
 	const audioContext = AudioContextMock(sinon.createSandbox())
-	const audioNodeMixer = AudioNodeMixer(audioContext)
+	const audioNodeMixer = NodeOutputMixer(audioContext)
 	const audioNodeMixerRightInput = audioContext.createOscillator()
 	t.true(typeof audioNodeMixer.setRightInput(audioNodeMixerRightInput) === 'object')
 })
 
-test('AudioNodeMixer fade method affects audioContext gains', (t) => {
+test('NodeOutputMixer fade method affects audioContext gains', (t) => {
 	const audioContext = AudioContextMock(sinon.createSandbox())
-	const audioNodeMixer = AudioNodeMixer(audioContext)
+	const audioNodeMixer = NodeOutputMixer(audioContext)
 	const gainValues = audioContext.getGainNodes()
 		.map(gainNode => gainNode.gain.value)
 	audioNodeMixer.fade(1)

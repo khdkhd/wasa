@@ -1,4 +1,4 @@
-export const AudioNodeMixer = (audioContext) => {
+export const NodeOutputMixer = (audioContext) => {
 	const outputGainNode = audioContext.createGain()
 	const leftGainNode = audioContext.createGain()
 	const rightGainNode = audioContext.createGain()
@@ -21,8 +21,8 @@ export const AudioNodeMixer = (audioContext) => {
 			audioNode.connect(rightGainNode)
 			return this
 		},
-		connect({ input, connect }) {
-			outputGainNode.connect(input)
+		connect({ connect, getInput }) {
+			outputGainNode.connect(getInput())
 			return { connect }
 		},
 		getLeftGainNode() {

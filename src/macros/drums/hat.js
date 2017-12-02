@@ -38,8 +38,8 @@ export const Hat = (audioContext) => {
 				osc.stop(time)
 			}
 		},
-		connect({ connect, input }) {
-			output.connect(input)
+		connect({ connect, getInput }) {
+			output.connect(getInput())
 			return { connect }
 		},
 		setDuration(value) {

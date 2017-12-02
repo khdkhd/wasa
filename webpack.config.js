@@ -40,7 +40,7 @@ const config = env => ({
 	resolve: {
 		extensions: ['.js'],
 		alias: {
-			'@': './src',
+			'@': './src/',
 		},
 		modules: [
 			path.resolve('./node_modules'),

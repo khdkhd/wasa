@@ -54,6 +54,11 @@ export const AudioContextMock = (sandbox) => {
 		connect: sandbox.spy(),
 	})
 
+	const createDelay = () => ({
+		delayTime: AudioParam(),
+		connect: sandbox.spy(),
+	})
+
 	const AudioContextMethods = {
 		createOscillator() {
 			const osc = createOscillator()
@@ -70,6 +75,7 @@ export const AudioContextMock = (sandbox) => {
 		createBufferSource,
 		createBuffer,
 		createPeriodicWave,
+		createDelay,
 	}
 
 

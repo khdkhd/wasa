@@ -1,4 +1,4 @@
-import { AudioNodeMixer } from './audio-node-mixer'
+import { NodeOutputMixer } from '../routing/node-output-mixer'
 
 export const Snare = (audioContext) => {
 	const bufferSize = audioContext.sampleRate
@@ -12,7 +12,7 @@ export const Snare = (audioContext) => {
 	const noiseGain = audioContext.createGain()
 	const noiseFilter = audioContext.createBiquadFilter()
 	const oscGain = audioContext.createGain()
-	const nodeMixer = AudioNodeMixer(audioContext)
+	const nodeMixer = NodeOutputMixer(audioContext)
 
 	let osc
 	let noise
@@ -22,15 +22,15 @@ export const Snare = (audioContext) => {
 	let noiseFilterValue = 1000
 
 	const real = new Float32Array([0, 0, 1, 0, 1])
-	const imag = new Float32Array([0, 0, 0, 0, 0])
-	const customWave = audioContext.createPeriodicWave(real, imag)
+	const imaginary = new Float32Array([0, 1, 0, 0, 0])
+	const customWave = audioContext.createPeriodicWave(real, imaginary)
 
 	noiseFilter.type = 'lowpass'
 	noiseFilter.frequency.value = noiseFilterValue
 	noiseFilter.connect(noiseGain)
 	nodeMixer.setLeftInput(noiseGain)
 	nodeMixer.setRightInput(oscGain)
-	nodeMixer.connect({ input: output })
+	nodeMixer.connect({ getInput: () => output })
 
 	return {
 		noteOn(time = audioContext.currentTime, velocity = 1) {
@@ -59,8 +59,8 @@ export const Snare = (audioContext) => {
 				noise.stop(time)
 			}
 		},
-		connect({ connect, input }) {
-			output.connect(input)
+		connect({ connect, getInput }) {
+			output.connect(getInput())
 			return { connect }
 		},
 		setDurationValue(value) {
