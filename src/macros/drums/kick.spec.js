@@ -1,7 +1,7 @@
 import test from 'ava'
 import sinon from 'sinon'
 import { Kick } from './kick'
-import { AudioContextMock } from '../mock/audio-context.mock'
+import { AudioContextMock } from '../../mock/audio-context.mock'
 
 test('Kick factory returns object', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
@@ -21,13 +21,6 @@ test('Kick factory returns object with a frequency getter and setter', (t) => {
 	const kick = Kick(audioContext)
 	kick.setFrequencyValue(440)
 	t.is(440, kick.getFrequencyValue())
-})
-
-test('Kick factory returns object with a finalFrequency getter and setter', (t) => {
-	const audioContext = AudioContextMock(sinon.sandbox.create())
-	const kick = Kick(audioContext)
-	kick.setFinalFrequencyValue(220)
-	t.is(220, kick.getFinalFrequencyValue())
 })
 
 test('Kick factory returns object with an outputGain getter and setter', (t) => {
@@ -55,7 +48,7 @@ test('Kick connect method returns an object with a connect method', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	const kick = Kick(audioContext)
 	const nextInChain = {
-		input: audioContext.createGain(),
+		getInput: () => audioContext.createGain(),
 		connect() {},
 	}
 	t.true(typeof kick.connect(nextInChain).connect === 'function')

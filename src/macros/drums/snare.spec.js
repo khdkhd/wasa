@@ -1,6 +1,6 @@
 import test from 'ava'
 import sinon from 'sinon'
-import { AudioContextMock } from '../mock/audio-context.mock'
+import { AudioContextMock } from '../../mock/audio-context.mock'
 import { Snare } from './snare'
 
 test('Snare factory returns object', (t) => {
@@ -49,7 +49,9 @@ test('Snare connect method returns an object with a connect method', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	const snare = Snare(audioContext)
 	const nextInChain = {
-		input: audioContext.createGain(),
+		getInput() {
+			return audioContext.createGain()
+		},
 		connect() {
 		},
 	}

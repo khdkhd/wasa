@@ -13,11 +13,13 @@ export const Delay = (audioContext) => {
 	delay.delayTime.value = 60 / (tempo * division)
 
 	return {
-		connect({ connect, input }) {
-			output.connect(input)
+		connect({ connect, getInput }) {
+			output.connect(getInput())
 			return { connect }
 		},
-		input: delay,
+		getInput(){
+			return delay
+		},
 		setTempoValue(value) {
 			tempo = value
 			delay.delayTime.value = 60 / (tempo * division)

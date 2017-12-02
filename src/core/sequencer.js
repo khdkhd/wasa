@@ -2,9 +2,9 @@ import WorkerTimer from 'worker-timer'
 
 export const Sequencer = (audioContext) => {
 	/* time values */
-	let division = 4 // ticks per quarter note
-	let startTime = 0 // start time
-	let tickTime = 0 // next tick time
+	let ticksPerQuarterNote = 4
+	let startTime = 0
+	let nextTickTime = 0
 	let tick = 0
 	/* state change callbacks */
 	let onTick = () => {}
@@ -25,10 +25,10 @@ export const Sequencer = (audioContext) => {
 	 */
 	const schedule = (op) => {
 		const currentTime = (audioContext.currentTime - startTime)
-		if (!stop && currentTime >= tickTime) {
+		if (!stop && currentTime >= nextTickTime) {
 			tick += 1
-			op(tick, tempo, division)
-			tickTime = currentTime + (60 / (tempo * division))
+			op(tick, tempo, ticksPerQuarterNote)
+			nextTickTime = currentTime + (60 / (tempo * ticksPerQuarterNote))
 			if (loop && tick === length) {
 				tick = 0
 				onLoop()
@@ -54,7 +54,7 @@ export const Sequencer = (audioContext) => {
 		stop() {
 			WorkerTimer.clearInterval(timer)
 			stop = true
-			tickTime = 0
+			nextTickTime = 0
 			tick = 0
 			onStop()
 			return this
@@ -77,11 +77,11 @@ export const Sequencer = (audioContext) => {
 			return length
 		},
 		setDivision(value) {
-			division = value
+			ticksPerQuarterNote = value
 			return this
 		},
 		getDivision() {
-			return division
+			return ticksPerQuarterNote
 		},
 		setTempo(value) {
 			tempo = value
