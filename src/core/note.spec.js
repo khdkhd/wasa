@@ -48,7 +48,7 @@ test('Midi value 60 converts to 261.63 Hz with a 440 tuning value (curry)', (t) 
 test('Frequency 440 Hz converts to midi value 69 with a 440 tuning value (curry)', (t) => {
 	const frequencyToMidiPartial = frequencyToMidi(/* defaults to 440 */)
 	const midiValue = frequencyToMidiPartial(440)
-	t.is(69,midiValue)
+	t.is(69, midiValue)
 })
 
 test('Frequency 261.63 Hz converts to midi value 60 with a 440 tuning value (curry)', (t) => {

@@ -23,7 +23,7 @@ export const RingModulator = (audioContext) => {
 	let outputGainValue = 0.9
 	let frequencyValue = 18000
 	let lfoGainValue = 1
-	let lfo;
+	let lfo
 
 	/* constant values (caution with your speakers !) */
 	const MAX_LFO_HZ_FREQUENCY = 18000
@@ -59,8 +59,6 @@ export const RingModulator = (audioContext) => {
 	lfoGain.gain.value = lfoGainValue
 	stereoLeftDelay.delayTime.value = delayTimeValue
 	stereoRightDelay.delayTime.value = delayTimeValue
-
-
 
 	attenuator.gain.value = 0.6
 	output.gain.value = 1E-100
@@ -98,6 +96,9 @@ export const RingModulator = (audioContext) => {
 		setLfoGainValue(value) {
 			const normalizedValue = clamp(0, 1, value)
 			lfoGainValue = MAX_LFO_GAIN_IN_DB * normalizedValue
+		},
+		setOutputGainValue(value) {
+			outputGainValue = value
 		},
 	}
 }

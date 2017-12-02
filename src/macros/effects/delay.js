@@ -17,7 +17,7 @@ export const Delay = (audioContext) => {
 			output.connect(getInput())
 			return { connect }
 		},
-		getInput(){
+		getInput() {
 			return delay
 		},
 		setTempoValue(value) {
@@ -49,8 +49,6 @@ export const Delay = (audioContext) => {
 		},
 		getFeedbackValue() {
 			return feedback.gain.value
-		}
-
+		},
 	}
-
 }

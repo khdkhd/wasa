@@ -14,9 +14,9 @@ export const CheapSynth = (audioContext) => {
 	oscMix.setLeftInput(subOscGain)
 	oscMix.setRightInput(mainOscGain)
 	filter.frequency.value = 800
-	oscMix
-		.connect(chorus)
-		.connect(delay)		.connect({ getInput: () => output })
+	oscMix.connect(chorus)
+		.connect(delay)
+		.connect({ getInput: () => output })
 	delay.setTempoValue(120)
 		.setDivisionValue(4)
 		.setFrequencyValue(400)
