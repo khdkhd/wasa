@@ -47,6 +47,10 @@ export const AudioContextMock = (sandbox) => {
 		connect: sandbox.spy(),
 	})
 
+	const createChannelSplitter = () => ({
+		connect: sandbox.spy(),
+	})
+
 	const createBiquadFilter = () => ({
 		frequency: AudioParam(),
 		gain: AudioParam(),
@@ -72,6 +76,7 @@ export const AudioContextMock = (sandbox) => {
 		},
 		createBiquadFilter,
 		createChannelMerger,
+		createChannelSplitter,
 		createBufferSource,
 		createBuffer,
 		createPeriodicWave,
