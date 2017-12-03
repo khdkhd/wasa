@@ -1,4 +1,5 @@
 import { clamp } from 'ramda'
+import { scale } from '../../common/range'
 
 export const RingModulator = (audioContext) => {
 	/* web audio nodes */
@@ -73,7 +74,7 @@ export const RingModulator = (audioContext) => {
 		noteOn(time = audioContext.currentTime) {
 			lfo = audioContext.createOscillator()
 			lfo.connect(lfoGain)
-			lfo.frequency.value = Math.random() * frequencyValue
+			lfo.frequency.value = 278
 			lfo.setPeriodicWave(lfoWave)
 			lfo.start(time)
 			output.gain.linearRampToValueAtTime(outputGainValue, time)
@@ -82,23 +83,43 @@ export const RingModulator = (audioContext) => {
 			output.gain.linearRampToValueAtTime(0, time + releaseTimeValue)
 			lfo.stop(time + releaseTimeValue)
 		},
-		setRingModulation(value) {
+		setRingModulationValue(value) {
 			const normalizedValue = clamp(0, 1, value)
 			frequencyValue = MAX_LFO_HZ_FREQUENCY * normalizedValue
+			return this
+		},
+		getRingModulationValue() {
+			return scale({ min: 0, max: MAX_LFO_HZ_FREQUENCY }, frequencyValue)
 		},
 		setDelayTimeValue(value) {
 			const normalizedValue = clamp(0, 1, value)
 			delayTimeValue = MAX_DELAY_TIME_IN_SECONDS * normalizedValue
+			return this
+		},
+		getDelayTimeValue() {
+			return scale({ min: 0, max: MAX_DELAY_TIME_IN_SECONDS }, delayTimeValue)
 		},
 		setReleaseTimeValue(value) {
 			releaseTimeValue = value
+			return this
+		},
+		getReleaseTimeValue() {
+			return releaseTimeValue
 		},
 		setLfoGainValue(value) {
 			const normalizedValue = clamp(0, 1, value)
 			lfoGainValue = MAX_LFO_GAIN_IN_DB * normalizedValue
+			return this
+		},
+		getLfoGainValue() {
+			return scale({ min: 0, max: MAX_LFO_GAIN_IN_DB }, lfoGainValue)
 		},
 		setOutputGainValue(value) {
 			outputGainValue = value
+			return this
+		},
+		getOutputGainValue() {
+			return outputGainValue
 		},
 	}
 }
