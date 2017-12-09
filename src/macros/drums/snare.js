@@ -40,14 +40,14 @@ export const Snare = (audioContext) => {
 			noise = audioContext.createBufferSource()
 			noise.buffer = buffer
 			noise.connect(noiseFilter)
-			noiseGain.gain.setValueAtTime(0.5 * velocity, time)
-			noiseGain.gain.exponentialRampToValueAtTime(1E-10, time + duration)
-			noise.start(time)
 			osc.frequency.setValueAtTime(frequency, time)
 			oscGain.gain.setValueAtTime(0.5 * velocity, time)
 			oscGain.gain.exponentialRampToValueAtTime(1E-10, time + 0.15)
 			osc.start(time)
 			osc.stop(time + 0.15)
+			noiseGain.gain.setValueAtTime(0.5 * velocity, time)
+			noiseGain.gain.exponentialRampToValueAtTime(1E-10, time + duration)
+			noise.start(time)
 			noise.stop(time + duration)
 		},
 		noteOff(time = audioContext.currentTime + duration) {

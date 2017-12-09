@@ -30,13 +30,6 @@ test('Kick factory returns object with an outputGain getter and setter', (t) => 
 	t.is(0.25, kick.getOutputGainValue())
 })
 
-test('Kick factory returns object with an output gain getter and setter', (t) => {
-	const audioContext = AudioContextMock(sinon.sandbox.create())
-	const kick = Kick(audioContext)
-	kick.setOutputGainValue(0.25)
-	t.is(0.25, kick.getOutputGainValue())
-})
-
 test('Kick factory returns object with an sub osc enabled getter and setter', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	const kick = Kick(audioContext)
@@ -54,16 +47,23 @@ test('Kick connect method returns an object with a connect method', (t) => {
 	t.true(typeof kick.connect(nextInChain).connect === 'function')
 })
 
-test('Kick noteOn method call create oscillators in the audio context', (t) => {
+test('Kick noteOn method call create oscillators in the audio context with sub osc disabled', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
-	const kick = Kick(audioContext)
+	const kick = Kick(audioContext).setIsSubOscEnabled(false)
 	kick.noteOn()
 	t.true(audioContext.createOscillator.called)
 })
 
-test('Kick noteOff method call stop on oscillator nodes', (t) => {
+test('Kick noteOn method call create oscillators in the audio context with sub osc enabled', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
-	const kick = Kick(audioContext)
+	const kick = Kick(audioContext).setIsSubOscEnabled(true)
+	kick.noteOn()
+	t.true(audioContext.createOscillator.called)
+})
+
+test('Kick noteOff method call stop on oscillator nodes with sub osc disabled', (t) => {
+	const audioContext = AudioContextMock(sinon.sandbox.create())
+	const kick = Kick(audioContext).setIsSubOscEnabled(false)
 	kick.noteOn()
 	kick.noteOff()
 	audioContext.getOscillatorNodes()
@@ -72,15 +72,13 @@ test('Kick noteOff method call stop on oscillator nodes', (t) => {
 		})
 })
 
-test('Kick noteOff method cancel scheduled values on osc gain nodes', (t) => {
+test('Kick noteOff method call stop on oscillator nodes with sub osc enabled', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
-	const kick = Kick(audioContext)
+	const kick = Kick(audioContext).setIsSubOscEnabled(true)
 	kick.noteOn()
 	kick.noteOff()
-	let nG = 0 // number of gain nodes
-	audioContext.getGainNodes()
-		.forEach((gain) => {
-			nG += gain.gain.cancelScheduledValues.called ? 1 : 0
+	audioContext.getOscillatorNodes()
+		.forEach((osc) => {
+			t.true(osc.stop.called)
 		})
-	t.is(audioContext.getGainNodes().length - 1, nG)
 })
