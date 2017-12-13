@@ -1,5 +1,4 @@
 import { clamp } from 'ramda'
-import { scale } from '../../common/range'
 
 export const RingModulator = (audioContext) => {
 	/* web audio nodes */
@@ -23,7 +22,6 @@ export const RingModulator = (audioContext) => {
 	let releaseTimeValue = 0.1
 	let outputGainValue = 0.9
 	let frequencyValue = 18000
-	let lfoGainValue = 1
 	let lfo
 
 	/* constant values (caution with your speakers !) */
@@ -52,17 +50,17 @@ export const RingModulator = (audioContext) => {
 	channelMerger.connect(output)
 
 	/* setting default values */
-	feedbackRightToLeft.gain.value = 0.2
-	feedbackLeftToRight.gain.value = 0.2
+	feedbackRightToLeft.gain.value = 0.3
+	feedbackLeftToRight.gain.value = 0.3
 	feedbackFilter.type = 'bandpass'
-	feedbackFilter.Q.value = 100
-	feedbackFilter.gain.value = 0.5
-	lfoGain.gain.value = lfoGainValue
+	feedbackFilter.Q.value = 1000
+	feedbackFilter.gain.value = 1
+	feedbackFilter.frequency.value = 1000
 	stereoLeftDelay.delayTime.value = delayTimeValue
 	stereoRightDelay.delayTime.value = delayTimeValue
-
-	attenuator.gain.value = 0.6
+	attenuator.gain.value = 1
 	output.gain.value = 1E-100
+
 	return {
 		connect({ connect, getInput }) {
 			output.connect(getInput())
@@ -74,7 +72,7 @@ export const RingModulator = (audioContext) => {
 		noteOn(time = audioContext.currentTime) {
 			lfo = audioContext.createOscillator()
 			lfo.connect(lfoGain)
-			lfo.frequency.value = 278
+			lfo.frequency.value = frequencyValue
 			lfo.setPeriodicWave(lfoWave)
 			lfo.start(time)
 			output.gain.linearRampToValueAtTime(outputGainValue, time)
@@ -84,20 +82,20 @@ export const RingModulator = (audioContext) => {
 			lfo.stop(time + releaseTimeValue)
 		},
 		setRingModulationValue(value) {
-			const normalizedValue = clamp(0, 1, value)
-			frequencyValue = MAX_LFO_HZ_FREQUENCY * normalizedValue
+			frequencyValue = clamp(0, MAX_LFO_HZ_FREQUENCY, value)
 			return this
 		},
 		getRingModulationValue() {
-			return scale({ min: 0, max: MAX_LFO_HZ_FREQUENCY }, frequencyValue)
+			return frequencyValue
 		},
 		setDelayTimeValue(value) {
-			const normalizedValue = clamp(0, 1, value)
-			delayTimeValue = MAX_DELAY_TIME_IN_SECONDS * normalizedValue
+			delayTimeValue = (0, MAX_DELAY_TIME_IN_SECONDS, value)
+			stereoRightDelay.delayTime.value = delayTimeValue
+			stereoLeftDelay.delayTime.value = delayTimeValue
 			return this
 		},
 		getDelayTimeValue() {
-			return scale({ min: 0, max: MAX_DELAY_TIME_IN_SECONDS }, delayTimeValue)
+			return delayTimeValue
 		},
 		setReleaseTimeValue(value) {
 			releaseTimeValue = value
@@ -107,12 +105,11 @@ export const RingModulator = (audioContext) => {
 			return releaseTimeValue
 		},
 		setLfoGainValue(value) {
-			const normalizedValue = clamp(0, 1, value)
-			lfoGainValue = MAX_LFO_GAIN_IN_DB * normalizedValue
+			lfoGain.gain.value = clamp(0, MAX_LFO_GAIN_IN_DB, value)
 			return this
 		},
 		getLfoGainValue() {
-			return scale({ min: 0, max: MAX_LFO_GAIN_IN_DB }, lfoGainValue)
+			return lfoGain.gain.value
 		},
 		setOutputGainValue(value) {
 			outputGainValue = value

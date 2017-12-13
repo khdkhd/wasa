@@ -9,7 +9,7 @@ export const Delay = (audioContext) => {
 	filter.type = 'lowpass'
 	delay.connect(output)
 	let tempo = 120
-	let division = 4
+	let division = 3
 	delay.delayTime.value = 60 / (tempo * division)
 
 	return {
