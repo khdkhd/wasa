@@ -30,19 +30,6 @@ test('Kick factory returns object with an outputGain getter and setter', (t) => 
 	t.is(0.25, kick.getOutputGainValue())
 })
 
-test('Kick factory returns object with an output gain getter and setter', (t) => {
-	const audioContext = AudioContextMock(sinon.sandbox.create())
-	const kick = Kick(audioContext)
-	kick.setOutputGainValue(0.25)
-	t.is(0.25, kick.getOutputGainValue())
-})
-
-test('Kick factory returns object with an sub osc enabled getter and setter', (t) => {
-	const audioContext = AudioContextMock(sinon.sandbox.create())
-	const kick = Kick(audioContext)
-	kick.setIsSubOscEnabled(true)
-	t.is(true, kick.getIsSubOscEnabled())
-})
 
 test('Kick connect method returns an object with a connect method', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
@@ -54,12 +41,14 @@ test('Kick connect method returns an object with a connect method', (t) => {
 	t.true(typeof kick.connect(nextInChain).connect === 'function')
 })
 
+
 test('Kick noteOn method call create oscillators in the audio context', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	const kick = Kick(audioContext)
 	kick.noteOn()
 	t.true(audioContext.createOscillator.called)
 })
+
 
 test('Kick noteOff method call stop on oscillator nodes', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
@@ -70,17 +59,4 @@ test('Kick noteOff method call stop on oscillator nodes', (t) => {
 		.forEach((osc) => {
 			t.true(osc.stop.called)
 		})
-})
-
-test('Kick noteOff method cancel scheduled values on osc gain nodes', (t) => {
-	const audioContext = AudioContextMock(sinon.sandbox.create())
-	const kick = Kick(audioContext)
-	kick.noteOn()
-	kick.noteOff()
-	let nG = 0 // number of gain nodes
-	audioContext.getGainNodes()
-		.forEach((gain) => {
-			nG += gain.gain.cancelScheduledValues.called ? 1 : 0
-		})
-	t.is(audioContext.getGainNodes().length - 1, nG)
 })

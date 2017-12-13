@@ -17,8 +17,8 @@ export const Snare = (audioContext) => {
 	let osc
 	let noise
 	let duration = 0.25
-	let frequency = 100
-	let oscMixValue = 0.5
+	let frequency = 80
+	let oscMixValue = -0.2
 	let noiseFilterValue = 1000
 
 	const real = new Float32Array([0, 0, 1, 0, 1])
@@ -28,8 +28,8 @@ export const Snare = (audioContext) => {
 	noiseFilter.type = 'lowpass'
 	noiseFilter.frequency.value = noiseFilterValue
 	noiseFilter.connect(noiseGain)
-	nodeMixer.setLeftInput(noiseGain)
-	nodeMixer.setRightInput(oscGain)
+	nodeMixer.setLeftInput(oscGain)
+	nodeMixer.setRightInput(noiseGain)
 	nodeMixer.connect({ getInput: () => output })
 
 	return {
@@ -40,14 +40,15 @@ export const Snare = (audioContext) => {
 			noise = audioContext.createBufferSource()
 			noise.buffer = buffer
 			noise.connect(noiseFilter)
-			noiseGain.gain.setValueAtTime(0.5 * velocity, time)
-			noiseGain.gain.exponentialRampToValueAtTime(1E-10, time + duration)
-			noise.start(time)
 			osc.frequency.setValueAtTime(frequency, time)
+			osc.frequency.exponentialRampToValueAtTime(frequency / 2, time + 0.15)
 			oscGain.gain.setValueAtTime(0.5 * velocity, time)
 			oscGain.gain.exponentialRampToValueAtTime(1E-10, time + 0.15)
 			osc.start(time)
 			osc.stop(time + 0.15)
+			noiseGain.gain.setValueAtTime(0.5 * velocity, time)
+			noiseGain.gain.exponentialRampToValueAtTime(1E-10, time + duration)
+			noise.start(time)
 			noise.stop(time + duration)
 		},
 		noteOff(time = audioContext.currentTime + duration) {
@@ -79,7 +80,7 @@ export const Snare = (audioContext) => {
 		},
 		setOscMixValue(value) {
 			oscMixValue = value
-			nodeMixer.fade(oscMixValue - 0.5)
+			nodeMixer.setFadeValue(oscMixValue)
 			return this
 		},
 		getOscMixValue() {

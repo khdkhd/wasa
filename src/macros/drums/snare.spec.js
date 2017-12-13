@@ -93,5 +93,5 @@ test('Snare noteOff method cancel scheduled values on osc gain nodes', (t) => {
 		.forEach((gain) => {
 			nG += gain.gain.cancelScheduledValues.called ? 1 : 0
 		})
-	t.is(audioContext.getGainNodes().length - 4, nG)
+	t.is(audioContext.getGainNodes().length, nG)
 })

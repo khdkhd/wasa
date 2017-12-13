@@ -9,10 +9,10 @@ test('NodeOutputMixer factory creates an object', (t) => {
 	t.true(typeof audioNodeMixer === 'object')
 })
 
-test('NodeOutputMixer factory creates an object with a fade method', (t) => {
+test('NodeOutputMixer factory creates an object with a setFadeValue method', (t) => {
 	const audioContext = AudioContextMock(sinon.createSandbox())
 	const audioNodeMixer = NodeOutputMixer(audioContext)
-	t.true(typeof audioNodeMixer.fade === 'function')
+	t.true(typeof audioNodeMixer.setFadeValue === 'function')
 })
 
 test('NodeOutputMixer connect method returns an object with a connect method', (t) => {
@@ -53,12 +53,12 @@ test('NodeOutputMixer connect method returns an object with a right input setter
 	t.true(typeof audioNodeMixer.setRightInput(audioNodeMixerRightInput) === 'object')
 })
 
-test('NodeOutputMixer fade method affects audioContext gains', (t) => {
+test('NodeOutputMixer setFadeValue method affects audioContext gains', (t) => {
 	const audioContext = AudioContextMock(sinon.createSandbox())
 	const audioNodeMixer = NodeOutputMixer(audioContext)
 	const gainValues = audioContext.getGainNodes()
 		.map(gainNode => gainNode.gain.value)
-	audioNodeMixer.fade(1)
+	audioNodeMixer.setFadeValue(1)
 	let modified = false
 	audioContext.getGainNodes()
 		.map(gainNode => gainNode.gain.value)

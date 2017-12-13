@@ -2,6 +2,7 @@ import { NodeOutputMixer } from '../routing/node-output-mixer'
 import { midiToFrequency } from '../../core/note'
 import { Delay } from '../effects/delay'
 import { RingModulator } from '../effects/ring-modulator'
+import { DryWetMixer } from '../routing/dry-wet-mixer'
 
 export const CheapSynth = (audioContext) => {
 	const filter = audioContext.createBiquadFilter()
@@ -10,12 +11,12 @@ export const CheapSynth = (audioContext) => {
 	const subOscGain = audioContext.createGain()
 	const mainOscGain = audioContext.createGain()
 	const delay = Delay(audioContext)
-	const chorus = RingModulator(audioContext)
+	const chorus = RingModulator(audioContext).setRingModulationValue(8000)
 	oscMix.setLeftInput(subOscGain)
 	oscMix.setRightInput(mainOscGain)
 	filter.frequency.value = 800
-	oscMix.connect(chorus)
-		.connect(delay)
+	oscMix
+		.connect(DryWetMixer(audioContext).setWetNode(chorus).setFadeValue(-0.05))
 		.connect({ getInput: () => output })
 	delay.setTempoValue(120)
 		.setDivisionValue(4)
