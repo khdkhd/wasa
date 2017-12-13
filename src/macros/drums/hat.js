@@ -28,8 +28,8 @@ export const Hat = (audioContext) => {
 				osc.stop(time + duration)
 			})
 			output.gain.setValueAtTime(0.00001, time)
-			output.gain.exponentialRampToValueAtTime(1 * velocity, time + 0.02)
-			output.gain.exponentialRampToValueAtTime(0.3, time + 0.03)
+			output.gain.exponentialRampToValueAtTime(velocity, time + 0.02)
+			output.gain.exponentialRampToValueAtTime(velocity * 0.3, time + 0.03)
 			output.gain.exponentialRampToValueAtTime(0.00001, time + duration)
 		},
 		noteOff(time = audioContext.currentTime + duration) {
