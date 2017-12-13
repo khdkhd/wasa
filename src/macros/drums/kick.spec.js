@@ -30,12 +30,6 @@ test('Kick factory returns object with an outputGain getter and setter', (t) => 
 	t.is(0.25, kick.getOutputGainValue())
 })
 
-test('Kick factory returns object with an sub osc enabled getter and setter', (t) => {
-	const audioContext = AudioContextMock(sinon.sandbox.create())
-	const kick = Kick(audioContext)
-	kick.setIsSubOscEnabled(true)
-	t.is(true, kick.getIsSubOscEnabled())
-})
 
 test('Kick connect method returns an object with a connect method', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
@@ -47,34 +41,18 @@ test('Kick connect method returns an object with a connect method', (t) => {
 	t.true(typeof kick.connect(nextInChain).connect === 'function')
 })
 
-test('Kick noteOn method call create oscillators in the audio context with sub osc disabled', (t) => {
+
+test('Kick noteOn method call create oscillators in the audio context', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
-	const kick = Kick(audioContext).setIsSubOscEnabled(false)
+	const kick = Kick(audioContext)
 	kick.noteOn()
 	t.true(audioContext.createOscillator.called)
 })
 
-test('Kick noteOn method call create oscillators in the audio context with sub osc enabled', (t) => {
-	const audioContext = AudioContextMock(sinon.sandbox.create())
-	const kick = Kick(audioContext).setIsSubOscEnabled(true)
-	kick.noteOn()
-	t.true(audioContext.createOscillator.called)
-})
 
-test('Kick noteOff method call stop on oscillator nodes with sub osc disabled', (t) => {
+test('Kick noteOff method call stop on oscillator nodes', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
-	const kick = Kick(audioContext).setIsSubOscEnabled(false)
-	kick.noteOn()
-	kick.noteOff()
-	audioContext.getOscillatorNodes()
-		.forEach((osc) => {
-			t.true(osc.stop.called)
-		})
-})
-
-test('Kick noteOff method call stop on oscillator nodes with sub osc enabled', (t) => {
-	const audioContext = AudioContextMock(sinon.sandbox.create())
-	const kick = Kick(audioContext).setIsSubOscEnabled(true)
+	const kick = Kick(audioContext)
 	kick.noteOn()
 	kick.noteOff()
 	audioContext.getOscillatorNodes()
