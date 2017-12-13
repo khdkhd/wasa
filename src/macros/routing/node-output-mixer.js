@@ -1,17 +1,30 @@
 export const NodeOutputMixer = (audioContext) => {
+	/* web audio nodes */
 	const outputGainNode = audioContext.createGain()
 	const leftGainNode = audioContext.createGain()
 	const rightGainNode = audioContext.createGain()
 
+	/* constant values */
+	const MIDDLE_GAIN_VALUE = 0.5
+
+	/* parameter values */
+	let fadeValue = 0
+
+	/* routing */
 	leftGainNode.connect(outputGainNode)
 	rightGainNode.connect(outputGainNode)
-	leftGainNode.gain.value = 0.5
-	rightGainNode.gain.value = 0.5
+	leftGainNode.gain.value = MIDDLE_GAIN_VALUE
+	rightGainNode.gain.value = MIDDLE_GAIN_VALUE
 
 	return {
-		fade(value) {
-			leftGainNode.gain.value = 1 - Math.abs(value)
-			rightGainNode.gain.value = Math.abs(value)
+		setFadeValue(value) {
+			fadeValue = value
+			leftGainNode.gain.value = MIDDLE_GAIN_VALUE - (value * MIDDLE_GAIN_VALUE)
+			rightGainNode.gain.value = MIDDLE_GAIN_VALUE + (value * MIDDLE_GAIN_VALUE)
+			return this
+		},
+		getFadeValue() {
+			return fadeValue
 		},
 		setLeftInput(audioNode) {
 			audioNode.connect(leftGainNode)

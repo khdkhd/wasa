@@ -10,29 +10,34 @@ export const AudioContextMock = (sandbox) => {
 		currentTime += 1
 	}, 1000)
 
-	const AudioParam = () => ({
+	const AudioNode = {
+		connect: sandbox.spy(),
+		disconnect: sandbox.spy(),
+	}
+
+	const AudioParam = {
 		setValueAtTime: sandbox.spy(),
 		cancelScheduledValues: sandbox.spy(),
 		linearRampToValueAtTime: sandbox.spy(),
 		exponentialRampToValueAtTime: sandbox.spy(),
 		value: undefined,
-	})
+	}
 
 	const createGain = () => ({
-		gain: AudioParam(),
-		connect: sandbox.spy(),
+		...AudioNode,
+		gain: { ...AudioParam },
 	})
 
 	const createOscillator = () => ({
-		frequency: AudioParam(),
-		connect: sandbox.spy(),
+		...AudioNode,
+		frequency: { ...AudioParam },
 		start: sandbox.spy(),
 		stop: sandbox.spy(),
 		setPeriodicWave: sandbox.spy(),
 	})
 
 	const createBufferSource = () => ({
-		connect: sandbox.spy(),
+		...AudioNode,
 		start: sandbox.spy(),
 		stop: sandbox.spy(),
 	})
@@ -44,23 +49,23 @@ export const AudioContextMock = (sandbox) => {
 	const createPeriodicWave = () => ({})
 
 	const createChannelMerger = () => ({
-		connect: sandbox.spy(),
+		...AudioNode,
 	})
 
 	const createChannelSplitter = () => ({
-		connect: sandbox.spy(),
+		...AudioNode,
 	})
 
 	const createBiquadFilter = () => ({
-		frequency: AudioParam(),
-		gain: AudioParam(),
-		Q: AudioParam(),
+		frequency: { ...AudioParam },
+		gain: { ...AudioParam },
+		Q: { ...AudioParam },
 		connect: sandbox.spy(),
 	})
 
 	const createDelay = () => ({
-		delayTime: AudioParam(),
-		connect: sandbox.spy(),
+		...AudioNode,
+		delayTime: { ...AudioParam },
 	})
 
 	const AudioContextMethods = {
