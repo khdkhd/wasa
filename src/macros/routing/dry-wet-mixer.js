@@ -1,7 +1,6 @@
 import { NodeOutputMixer } from './node-output-mixer'
 
 export const DryWetMixer = (audioContext) => {
-
 	const nodeOutputMixer = NodeOutputMixer(audioContext)
 	const inputGainNode = audioContext.createGain()
 	const dryGainNode = audioContext.createGain()
@@ -25,6 +24,6 @@ export const DryWetMixer = (audioContext) => {
 			inputGainNode.connect(dryGainNode)
 			inputGainNode.connect(wetNode)
 			return this
-		}
+		},
 	})
 }
