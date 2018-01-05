@@ -1,9 +1,11 @@
 export const Hat = (audioContext) => {
 	const ratios = [2, 3, 4.16, 5.43, 6.79, 8.21]
 	const bandpass = audioContext.createBiquadFilter()
+	const gate = audioContext.createGain()
 	const output = audioContext.createGain()
 	const highpass = audioContext.createBiquadFilter()
-	const fundamental = 35
+
+	let fundamental = 35
 	let duration = 0.25
 	let osc
 
@@ -14,7 +16,8 @@ export const Hat = (audioContext) => {
 	highpass.frequency.value = 7000
 
 	bandpass.connect(highpass)
-	highpass.connect(output)
+	highpass.connect(gate)
+	gate.connect(output)
 
 	return {
 		noteOn(time = audioContext.currentTime, velocity = 1) {
@@ -27,14 +30,14 @@ export const Hat = (audioContext) => {
 				osc.start(time)
 				osc.stop(time + duration)
 			})
-			output.gain.setValueAtTime(0.00001, time)
-			output.gain.exponentialRampToValueAtTime(velocity, time + 0.02)
-			output.gain.exponentialRampToValueAtTime(velocity * 0.3, time + 0.03)
-			output.gain.exponentialRampToValueAtTime(0.00001, time + duration)
+			gate.gain.setValueAtTime(0.00001, time)
+			gate.gain.exponentialRampToValueAtTime(velocity, time + 0.02)
+			gate.gain.exponentialRampToValueAtTime(velocity * 0.3, time + 0.03)
+			gate.gain.exponentialRampToValueAtTime(0.00001, time + duration)
 		},
 		noteOff(time = audioContext.currentTime + duration) {
 			if (osc) {
-				output.gain.cancelScheduledValues(time)
+				gate.gain.cancelScheduledValues(time)
 				osc.stop(time)
 			}
 		},
@@ -42,12 +45,26 @@ export const Hat = (audioContext) => {
 			output.connect(getInput())
 			return { connect }
 		},
-		setDuration(value) {
+		setDurationValue(value) {
 			duration = value
 			return this
 		},
-		getDuration() {
+		getDurationValue() {
 			return duration
+		},
+		setFundamentalValue(value) {
+			fundamental = value
+			return this
+		},
+		getFundamentalValue() {
+			return fundamental
+		},
+		setOutputGainValue(value) {
+			output.gain.value = value
+			return this
+		},
+		getOutputGainValue() {
+			return output.gain.value
 		},
 	}
 }

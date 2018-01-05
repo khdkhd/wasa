@@ -1,16 +1,23 @@
 export const Delay = (audioContext) => {
+	/* audio nodes */
 	const output = audioContext.createGain()
 	const filter = audioContext.createBiquadFilter()
-	const delay = audioContext.createDelay()
+	const delay = audioContext.createDelay(5.0)
 	const feedback = audioContext.createGain()
+	/* routing */
 	delay.connect(feedback)
 	feedback.connect(filter)
 	filter.connect(delay)
 	filter.type = 'lowpass'
 	delay.connect(output)
+	/* parameters */
 	let tempo = 120
 	let division = 3
-	delay.delayTime.value = 60 / (tempo * division)
+	/* convert beat division to delay time in seconds */
+	const divisionToDelayTime = (_division, _tempo) => 60 / (_tempo * _division)
+	let delayTimeSeconds = divisionToDelayTime(division, tempo)
+
+	delay.delayTime.value = delayTimeSeconds
 
 	return {
 		connect({ connect, getInput }) {
@@ -22,7 +29,7 @@ export const Delay = (audioContext) => {
 		},
 		setTempoValue(value) {
 			tempo = value
-			delay.delayTime.value = 60 / (tempo * division)
+			delay.delayTime.value = divisionToDelayTime(division, tempo)
 			return this
 		},
 		getTempoValue() {
@@ -30,11 +37,23 @@ export const Delay = (audioContext) => {
 		},
 		setDivisionValue(value) {
 			division = value
-			delay.delayTime.value = 60 / (tempo * division)
+			delayTimeSeconds = divisionToDelayTime(division, tempo)
+			const feedbackValue = feedback.gain.value
+			feedback.gain.value = 0
+			delay.delayTime.value = delayTimeSeconds
+			feedback.gain.value = feedbackValue
 			return this
 		},
 		getDivisionValue() {
 			return division
+		},
+		setDelayTimeValue(value) {
+			delayTimeSeconds = value
+			delay.delayTime.value = delayTimeSeconds
+			return this
+		},
+		getDelayTimeValue() {
+			return delayTimeSeconds
 		},
 		setFrequencyValue(value) {
 			filter.frequency.value = value

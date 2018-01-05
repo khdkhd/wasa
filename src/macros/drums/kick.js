@@ -6,9 +6,11 @@ export const Kick = (audioContext) => {
 	let initialFrequency = 150
 	let duration = 0.15
 	let on = false
+	let muted = false
+	let outputGainValue = 1E-10
 	const finalFrequency = 0.01
 
-	output.gain.value = 1E-10
+	output.gain.value = outputGainValue
 	mainOscGain.gain.value = 1E-10
 
 	return {
@@ -52,11 +54,22 @@ export const Kick = (audioContext) => {
 			return duration
 		},
 		setOutputGainValue(value) {
-			output.gain.value = value
+			outputGainValue = value
+			if (!muted) {
+				output.gain.value = outputGainValue
+			}
 			return this
 		},
 		getOutputGainValue() {
-			return output.gain.value
+			return outputGainValue
+		},
+		mute() {
+			muted = true
+			output.gain.value = 1E-10
+		},
+		unMute() {
+			output.gain.value = outputGainValue
+			muted = false
 		},
 	}
 }
