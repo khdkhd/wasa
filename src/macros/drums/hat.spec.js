@@ -22,8 +22,8 @@ test('Hat connect method returns an object with a connect method', (t) => {
 test('Hat factory returns object with a duration getter and setter', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	const hat = Hat(audioContext)
-	hat.setDuration(1)
-	t.is(1, hat.getDuration())
+	hat.setDurationValue(1)
+	t.is(1, hat.getDurationValue())
 })
 
 test('Hat noteOn method call create oscillators in the audio context', (t) => {

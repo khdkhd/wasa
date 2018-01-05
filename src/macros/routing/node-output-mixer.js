@@ -18,9 +18,9 @@ export const NodeOutputMixer = (audioContext) => {
 
 	return {
 		setFadeValue(value) {
-			fadeValue = value
 			leftGainNode.gain.value = MIDDLE_GAIN_VALUE - (value * MIDDLE_GAIN_VALUE)
 			rightGainNode.gain.value = MIDDLE_GAIN_VALUE + (value * MIDDLE_GAIN_VALUE)
+			fadeValue = value
 			return this
 		},
 		getFadeValue() {
