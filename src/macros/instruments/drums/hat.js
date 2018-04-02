@@ -1,3 +1,5 @@
+import { Filters, WaveForms } from '../../constants'
+
 export const Hat = (audioContext) => {
 	const ratios = [2, 3, 4.16, 5.43, 6.79, 8.21]
 	const bandpass = audioContext.createBiquadFilter()

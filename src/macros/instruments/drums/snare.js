@@ -1,4 +1,5 @@
 import { NodeOutputMixer } from '../routing/node-output-mixer'
+import { Filters } from '../../constants'
 
 export const Snare = (audioContext) => {
 	const bufferSize = audioContext.sampleRate
