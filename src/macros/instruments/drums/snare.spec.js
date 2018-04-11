@@ -1,6 +1,6 @@
 import test from 'ava'
 import sinon from 'sinon'
-import { AudioContextMock } from '../../mock/audio-context.mock'
+import { AudioContextMock } from '../../../mock/audio-context.mock'
 import { Snare } from './snare'
 
 test('Snare factory returns object', (t) => {
@@ -72,26 +72,22 @@ test('Snare noteOn method call create oscillators in the audio context', (t) => 
 	t.true(audioContext.createOscillator.called)
 })
 
-test('Snare noteOff method call stop on oscillator nodes', (t) => {
+test('Snare noteOn method call exponentialRampToValueAtTime on osc gain node', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	const snare = Snare(audioContext)
 	snare.noteOn()
-	snare.noteOff()
-	audioContext.getOscillatorNodes()
-		.forEach((osc) => {
-			t.true(osc.stop.called)
-		})
+	const modifiedGain = audioContext.getGainNodes()
+		.find(node => node.gain.exponentialRampToValueAtTime.called)
+	t.truthy(modifiedGain)
 })
 
-test('Snare noteOff method cancel scheduled values on osc gain nodes', (t) => {
+
+test('Snare noteOff method call exponentialRampToValueAtTime on osc gain node', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	const snare = Snare(audioContext)
 	snare.noteOn()
 	snare.noteOff()
-	let nG = 0 // number of gain nodes
-	audioContext.getGainNodes()
-		.forEach((gain) => {
-			nG += gain.gain.cancelScheduledValues.called ? 1 : 0
-		})
-	t.is(audioContext.getGainNodes().length, nG)
+	const modifiedGain = audioContext.getGainNodes()
+		.find(node => node.gain.exponentialRampToValueAtTime.called)
+	t.truthy(modifiedGain)
 })
