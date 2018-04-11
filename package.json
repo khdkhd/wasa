@@ -1,11 +1,12 @@
 {
 	"name": "wasa",
-	"version": "0.0.18",
+	"version": "0.0.19",
 	"description": "High level tooling for Web Audio API",
 	"main": "dist/wasa.js",
 	"scripts": {
 		"lint": "eslint .",
 		"test": "nyc ava --verbose",
+		"tdd": "ava --watch",
 		"coverage": "nyc report --reporter=text-lcov | coveralls",
 		"build": "webpack --env=prod",
 		"prepublish": "npm run build"
@@ -67,6 +68,7 @@
 		"babel-plugin-transform-async-to-generator": "^6.24.1",
 		"babel-plugin-transform-runtime": "^6.23.0",
 		"babel-polyfill": "^6.26.0",
+		"babel-preset-2017": "^0.0.0",
 		"babel-preset-env": "^1.6.0",
 		"babel-preset-es2017": "^6.24.1",
 		"babel-preset-flow": "^6.23.0",
@@ -82,12 +84,12 @@
 		"eslint-plugin-import": "^2",
 		"eslint-plugin-jsx-a11y": "^5",
 		"eslint-plugin-react": "^7",
+		"jsdoc": "^3.5.5",
 		"nyc": "^11.3.0",
 		"sinon": "^3.2.1",
 		"webpack": "^3.6.0"
 	},
 	"dependencies": {
-		"babel-preset-2017": "^0.0.0",
 		"ramda": "^0.24.1",
 		"rxjs": "^5.4.3",
 		"worker-timer": "^1.1.0"

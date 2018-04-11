@@ -6,11 +6,11 @@ export const Delay = (audioContext) => {
 	const feedback = audioContext.createGain()
 	/* routing */
 	delay.connect(feedback)
-	feedback.connect(filter)
-	filter.connect(delay)
-	filter.type = 'lowpass'
-	delay.connect(output)
+			.connect(filter)
+			.connect(delay)
+			.connect(output)
 	/* parameters */
+	filter.type = 'lowpass'
 	let tempo = 120
 	let division = 3
 	/* convert beat division to delay time in seconds */

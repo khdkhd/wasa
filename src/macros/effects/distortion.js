@@ -11,8 +11,7 @@ export const Distortion = (audioContext) => {
 		return curve
 	}
 	const dist = audioContext.createWaveShaper()
-	dist.curve = makeDistortionCurve(50)
-	dist.oversample = '2x'
+	dist.curve = makeDistortionCurve(100)
 	return {
 		connect({ connect, getInput }) {
 			dist.connect(getInput())
@@ -20,6 +19,10 @@ export const Distortion = (audioContext) => {
 		},
 		getInput() {
 			return dist
+		},
+		setCurve(amount) {
+			dist.curve = makeDistortionCurve(amount)
+			return this
 		},
 	}
 }

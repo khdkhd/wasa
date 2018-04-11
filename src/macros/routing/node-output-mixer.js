@@ -1,4 +1,6 @@
-export const NodeOutputMixer = (audioContext) => {
+import { mandatory } from '../../common/utils'
+
+export const NodeOutputMixer = (audioContext = mandatory()) => {
 	/* web audio nodes */
 	const outputGainNode = audioContext.createGain()
 	const leftGainNode = audioContext.createGain()

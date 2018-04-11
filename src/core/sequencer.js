@@ -1,6 +1,17 @@
+/**
+ * sequencer module exports a factory function creating a sequencer tied to an AudioContext
+ * @module sequencer
+ */
 import WorkerTimer from 'worker-timer'
+import { mandatory } from '../common/utils'
 
-export const Sequencer = (audioContext) => {
+/**
+ * @function
+ * @param audioContext
+ * @returns {*}
+ * @constructor
+ */
+export const Sequencer = (audioContext = mandatory()) => {
 	/* time values */
 	let ticksPerQuarterNote = 4
 	let startTime = 0
@@ -37,7 +48,6 @@ export const Sequencer = (audioContext) => {
 	}
 
 	const play = () => {
-		schedule(onTick)
 		timer = WorkerTimer.setInterval(() => {
 			schedule(onTick)
 		}, 0)
