@@ -1,7 +1,7 @@
 import test from 'ava'
 import sinon from 'sinon'
 import { Kick } from './kick'
-import { AudioContextMock } from '../../mock/audio-context.mock'
+import { AudioContextMock } from '../../../mock/audio-context.mock'
 
 test('Kick factory returns object', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
@@ -42,21 +42,22 @@ test('Kick connect method returns an object with a connect method', (t) => {
 })
 
 
-test('Kick noteOn method call create oscillators in the audio context', (t) => {
+test('Kick noteOn method call exponentialRampToValueAtTime on osc gain node', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	const kick = Kick(audioContext)
 	kick.noteOn()
-	t.true(audioContext.createOscillator.called)
+	const modifiedGain = audioContext.getGainNodes()
+		.find(node => node.gain.exponentialRampToValueAtTime.called)
+	t.truthy(modifiedGain)
 })
 
 
-test('Kick noteOff method call stop on oscillator nodes', (t) => {
+test('Kick noteOff method call exponentialRampToValueAtTime on osc gain node', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	const kick = Kick(audioContext)
 	kick.noteOn()
 	kick.noteOff()
-	audioContext.getOscillatorNodes()
-		.forEach((osc) => {
-			t.true(osc.stop.called)
-		})
+	const modifiedGain = audioContext.getGainNodes()
+		.find(node => node.gain.exponentialRampToValueAtTime.called)
+	t.truthy(modifiedGain)
 })

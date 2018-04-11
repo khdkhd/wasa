@@ -1,11 +1,23 @@
+/**
+ * range module exports utility function for scaling/unscaling values to range
+ * @module range
+ */
+
 import { isNil } from 'ramda'
 
 /**
- * Unnormalizes a [0-1] range value back to the given range
- * @param {Object} range - The original range in which value scales
- * @param {number} value - The value to be scaled to a [0,1] range
+ * @typedef {Object} Range
+ * @property {number} min - Range minimum
+ * @property {number} max - Range maximum
  */
-export const unscale = (range, value) => {
+
+/**
+ * Unnormalizes a [0-1] range value back to the given range
+ * @param {module:range~Range} range - The original range in which value scales
+ * @param {number} value - The value to be scaled to a [0,1] range
+ * @returns {number} - Unnormalized value in range
+ */
+export function unscale(range, value) {
 	if (isNil(range)) {
 		return value
 	}
@@ -14,10 +26,11 @@ export const unscale = (range, value) => {
 
 /**
  * Normalizes value to a [0,1] range given its original range.min and range.max
- * @param {Object} range - The original range in which value scales
+ * @param {module:range~Range} range - The original range in which value scales
  * @param {number} value - The value to be scaled to a [0,1] range
+ * @returns {number} - Normalized value in range [0,1]
  */
-export const scale = (range, value) => {
+export function scale(range, value) {
 	if (isNil(range)) {
 		return value
 	}

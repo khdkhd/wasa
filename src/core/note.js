@@ -1,16 +1,22 @@
+/**
+ * note module exports a set of utility functions and constants for midi
+ * to symbol and midi to frequency conversion
+ * @module note
+ */
+
 import { isNil } from 'ramda'
 
 /**
- * Notes Durations Constants
+ * @typedef {Object} Note
+ * @property {string} pitchClass - The pitch in chromatic scale (english notation)
+ * @property {number} octave - The octave value associated to pitch class
+ */
+
+/**
+ * pitchClasses provides the chromatic scale symbols exported as a list:
+ * 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'
  * @type {Object}
  */
-export const DURATIONS = Object.freeze({
-	WHOLE: 1,
-	HALF: 1 / 2,
-	QUARTER: 1 / 4,
-	EIGHTH: 1 / 8,
-})
-
 export const pitchClasses = Object.freeze(['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'])
 
 /**
@@ -23,7 +29,7 @@ export const pitchClasses = Object.freeze(['C', 'C#', 'D', 'D#', 'E', 'F', 'F#',
  * @param {number} midiValue - Midi value (0 to 127) of the note
  * @returns {number|function} The computed frequency or a computing function
  */
-export const midiToFrequency = (tuning = 440, midiValue) => {
+export function midiToFrequency(tuning = 440, midiValue) {
 	if (isNil(midiValue)) {
 		return _ => midiToFrequency(tuning, _)
 	}
@@ -38,15 +44,16 @@ export const midiToFrequency = (tuning = 440, midiValue) => {
  * @param {string} pitchClass - Note in scale (english notation)
  * @param {number} octave - Octave value for note
  */
-export const symbolToMidi = (pitchClass, octave) =>
-	((octave + 1) * 12) + pitchClasses.indexOf(pitchClass)
-
+export function symbolToMidi(pitchClass, octave) {
+	return ((octave + 1) * 12) + pitchClasses.indexOf(pitchClass)
+}
 
 /**
  * Computes the pitch class and octave for the given midi value
  * @param {number} midiValue - Octave value for note
+ * @returns {module:note~Note}
  */
-export const midiToSymbol = (midiValue) => {
+export function midiToSymbol(midiValue) {
 	const pitchClassIndex = (midiValue - (12 * 2)) % 12
 	const octave = (midiValue - pitchClassIndex - 12) / 12
 	return {
@@ -65,7 +72,7 @@ export const midiToSymbol = (midiValue) => {
  * @param {number} midiValue - Midi value (0 to 127) of the note
  * @returns {number|function} The computed frequency or a computing function
  */
-export const frequencyToMidi = (tuning = 440, frequency) => {
+export function frequencyToMidi(tuning = 440, frequency) {
 	if (isNil(frequency)) {
 		return _ => frequencyToMidi(tuning, _)
 	}
@@ -81,11 +88,14 @@ export const frequencyToMidi = (tuning = 440, frequency) => {
  * @param {string} pitchClass - Note in scale (english notation)
  * @param {number} octave - Octave value for note
  */
-export const symbolToFrequency = (pitchClass, octave) =>
-	midiToFrequency(440, symbolToMidi(pitchClass, octave))
+export function symbolToFrequency(pitchClass, octave) {
+	return 	midiToFrequency(440, symbolToMidi(pitchClass, octave))
+}
 
 /**
  * Computes the note and octave values of the given frequency
  * @param {number} frequency - Octave value for note
  */
-export const frequencyToSymbol = frequency => midiToSymbol(frequencyToMidi(440, frequency))
+export function frequencyToSymbol(frequency) {
+	return midiToSymbol(frequencyToMidi(440, frequency))
+}

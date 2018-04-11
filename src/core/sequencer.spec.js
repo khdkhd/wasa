@@ -9,10 +9,10 @@ test('Sequencer factory creates a sequencer object', (t) => {
 	t.true(typeof sequencer === 'object')
 })
 
-test('Calling start triggers onPlay handler', (t) => {
+test('Calling start triggers onStart handler', (t) => {
 	const audioContext = AudioContextMock(sinon.sandbox.create())
 	Sequencer(audioContext)
-		.onTick(() => {
+		.onStart(() => {
 			t.pass()
 		})
 		.start()

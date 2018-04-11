@@ -1,4 +1,5 @@
 import WorkerTimer from 'worker-timer'
+import { identity } from 'ramda'
 
 export const AudioContextMock = (sandbox) => {
 	const oscillators = []
@@ -6,14 +7,18 @@ export const AudioContextMock = (sandbox) => {
 
 	let currentTime = 0
 
+	const sampleRate = 44000
+
 	WorkerTimer.setInterval(() => {
 		currentTime += 1
 	}, 1000)
 
 	const AudioNode = {
-		connect: sandbox.spy(),
 		disconnect: sandbox.spy(),
+		connect() {},
 	}
+
+	AudioNode.connect = sandbox.stub(AudioNode, 'connect').callsFake(identity)
 
 	const AudioParam = {
 		setValueAtTime: sandbox.spy(),
@@ -42,9 +47,16 @@ export const AudioContextMock = (sandbox) => {
 		stop: sandbox.spy(),
 	})
 
-	const createBuffer = () => ({
-		getChannelData: sandbox.spy(),
-	})
+	const createBuffer = () => {
+		const audioBuffer = {
+			length: sampleRate,
+			sampleRate,
+			getChannelData() {},
+		}
+		const createFloat32Array = () => new Float32Array(sampleRate)
+		audioBuffer.getChannelData = sandbox.stub(audioBuffer, 'getChannelData').callsFake(createFloat32Array)
+		return audioBuffer
+	}
 
 	const createPeriodicWave = () => ({})
 
@@ -56,11 +68,20 @@ export const AudioContextMock = (sandbox) => {
 		...AudioNode,
 	})
 
+	const createDynamicsCompressor = () => ({
+		...AudioNode,
+		threshold: { ...AudioParam },
+		knee: { ...AudioParam },
+		ratio: { ...AudioParam },
+		attack: { ...AudioParam },
+		release: { ...AudioParam },
+	})
+
 	const createBiquadFilter = () => ({
+		...AudioNode,
 		frequency: { ...AudioParam },
 		gain: { ...AudioParam },
 		Q: { ...AudioParam },
-		connect: sandbox.spy(),
 	})
 
 	const createDelay = () => ({
@@ -82,6 +103,7 @@ export const AudioContextMock = (sandbox) => {
 		createBiquadFilter,
 		createChannelMerger,
 		createChannelSplitter,
+		createDynamicsCompressor,
 		createBufferSource,
 		createBuffer,
 		createPeriodicWave,
@@ -103,5 +125,6 @@ export const AudioContextMock = (sandbox) => {
 				return gains
 			},
 			currentTime,
+			sampleRate,
 		})
 }
