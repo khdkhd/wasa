@@ -1,7 +1,7 @@
 import { WaveForms } from '../../../constants/wave-forms'
 import { mandatory } from '../../../common/utils'
 
-export const Kick = (audioContext = mandatory('audioContext')) => {
+export const createBassDrum = (audioContext = mandatory('audioContext')) => {
 	const output = audioContext.createGain()
 	const oscGain = audioContext.createGain()
 	const comp = audioContext.createDynamicsCompressor()

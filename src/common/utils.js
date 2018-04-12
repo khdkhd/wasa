@@ -1,4 +1,3 @@
-
 import { times } from 'ramda'
 
 export const mandatory = (parameterName = '') => {
@@ -34,3 +33,4 @@ export const wrapNode = (audioNode = mandatory()) => ({
 		return { connect }
 	},
 })
+

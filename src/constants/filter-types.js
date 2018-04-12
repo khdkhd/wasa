@@ -1,3 +1,7 @@
+/**
+ * FilterTypes provides constants for filter type assignation
+ * @type {Object}
+ */
 export const FilterTypes = Object.freeze({
 	LOW_PASS: 'lowpass',
 	BAND_PASS: 'bandpass',

@@ -1,28 +1,52 @@
-export const Distortion = (audioContext) => {
+import * as R from 'ramda'
+
+export const createDistortion = (audioContext) => {
 	const makeDistortionCurve = (amount) => {
-		const k = typeof amount === 'number' ? amount : 50
-		const nSamples = 44100
+		const { sampleRate } = audioContext
 		const curve = new Float32Array(44100)
 		const deg = Math.PI / 180
-		for (let i = 0; i < nSamples; i += 1) {
-			const x = (i * 2) / (nSamples - 1)
-			curve[i] = ((3 + k) * x * 20 * deg) / ((Math.PI + k) * Math.abs(x))
-		}
+		R.times((i) => {
+			const x = (i * 2) / (sampleRate - 1)
+			const a = (3 + amount) * x * 20 * deg
+			const b = Math.PI + (amount * Math.abs(x))
+			curve[i] = a / b
+		}, sampleRate)
 		return curve
 	}
+
+	const preGain = audioContext.createGain()
+	const postGain = audioContext.createGain()
 	const dist = audioContext.createWaveShaper()
-	dist.curve = makeDistortionCurve(100)
+	preGain.connect(dist).connect(postGain)
+	dist.curve = makeDistortionCurve(400)
+	dist.oversample = '4x'
+	preGain.gain.value = 50
+	postGain.gain.value = 1
 	return {
 		connect({ connect, getInput }) {
-			dist.connect(getInput())
-			return connect
+			postGain.connect(getInput())
+			return { connect }
 		},
 		getInput() {
-			return dist
+			return preGain
 		},
-		setCurve(amount) {
+		setCurveAmount(amount) {
 			dist.curve = makeDistortionCurve(amount)
 			return this
+		},
+		setPreGainValue(value) {
+			preGain.gain.value = value
+			return this
+		},
+		getPreGainValue() {
+			return preGain.gain.value
+		},
+		setPostGainValue(value) {
+			postGain.gain.value = value
+			return this
+		},
+		getPostGainValue() {
+			return postGain.gain.value
 		},
 	}
 }

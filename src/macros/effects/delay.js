@@ -1,4 +1,4 @@
-export const Delay = (audioContext) => {
+export const createDelay = (audioContext) => {
 	/* audio nodes */
 	const output = audioContext.createGain()
 	const filter = audioContext.createBiquadFilter()
@@ -38,10 +38,9 @@ export const Delay = (audioContext) => {
 		setDivisionValue(value) {
 			division = value
 			delayTimeSeconds = divisionToDelayTime(division, tempo)
-			const feedbackValue = feedback.gain.value
-			feedback.gain.value = 0
+			delay.disconnect(feedback)
 			delay.delayTime.value = delayTimeSeconds
-			feedback.gain.value = feedbackValue
+			delay.connect(feedback)
 			return this
 		},
 		getDivisionValue() {

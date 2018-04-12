@@ -1,14 +1,14 @@
 import * as R from 'ramda'
-import { Kick } from '../../macros/instruments/drums/kick'
-import { Snare } from '../../macros/instruments/drums/snare'
-import { Hat } from '../../macros/instruments/drums/hat'
+import { createBassDrum } from './drums/bass-drum'
+import { createSnare } from '../../macros/instruments/drums/snare'
+import { createHat } from '../../macros/instruments/drums/hat'
 import { mandatory, wrapNode } from '../../common/utils'
 
 export const GMDrumSynth = (audioContext = mandatory('audioContext')) => {
-	const bd = Kick(audioContext).setDurationValue(0.1)
-	const sn = Snare(audioContext).setDurationValue(0.5)
-	const hi = Hat(audioContext).setDurationValue(0.1)
-	const hat = Hat(audioContext).setDurationValue(0.5)
+	const bd = createBassDrum(audioContext).setDurationValue(0.1)
+	const sn = createSnare(audioContext).setDurationValue(0.5)
+	const hi = createHat(audioContext).setDurationValue(0.1)
+	const hat = createHat(audioContext).setDurationValue(0.5)
 
 	const output = wrapNode(audioContext.createGain())
 

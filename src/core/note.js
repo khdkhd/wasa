@@ -1,11 +1,4 @@
-/**
- * note module exports a set of utility functions and constants for midi
- * to symbol and midi to frequency conversion
- * @module note
- */
-
 import { isNil } from 'ramda'
-
 /**
  * @typedef {Object} Note
  * @property {string} pitchClass - The pitch in chromatic scale (english notation)
@@ -51,7 +44,7 @@ export function symbolToMidi(pitchClass, octave) {
 /**
  * Computes the pitch class and octave for the given midi value
  * @param {number} midiValue - Octave value for note
- * @returns {module:note~Note}
+ * @returns {Note}
  */
 export function midiToSymbol(midiValue) {
 	const pitchClassIndex = (midiValue - (12 * 2)) % 12

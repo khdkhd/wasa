@@ -8,10 +8,9 @@ import { mandatory } from '../common/utils'
 /**
  * @function
  * @param audioContext
- * @returns {*}
- * @constructor
+ * @returns {Sequencer}
  */
-export const Sequencer = (audioContext = mandatory()) => {
+export const createSequencer = (audioContext = mandatory()) => {
 	/* time values */
 	let ticksPerQuarterNote = 4
 	let startTime = 0
