@@ -1,5 +1,6 @@
 
 import { times } from 'ramda'
+import { WaveForms } from '../constants/wave-forms'
 
 export const mandatory = (parameterName = '') => {
 	throw new Error(`Missing mandatory parameter ${parameterName}`)
@@ -34,3 +35,4 @@ export const wrapNode = (audioNode = mandatory()) => ({
 		return { connect }
 	},
 })
+

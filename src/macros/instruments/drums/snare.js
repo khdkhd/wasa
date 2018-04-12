@@ -1,7 +1,7 @@
-import { NodeOutputMixer } from '../../routing/node-output-mixer'
+import { createNodeOutputMixer } from '../../routing/node-output-mixer'
 import { FilterTypes } from '../../../constants/filter-types'
 
-export const Snare = (audioContext) => {
+export const createSnare = (audioContext) => {
 	const bufferSize = 2 * audioContext.sampleRate
 	const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate)
 	const o = noiseBuffer.getChannelData(0)
@@ -13,7 +13,7 @@ export const Snare = (audioContext) => {
 	const noiseGain = audioContext.createGain()
 	const noiseFilter = audioContext.createBiquadFilter()
 	const oscGain = audioContext.createGain()
-	const nodeMixer = NodeOutputMixer(audioContext)
+	const nodeMixer = createNodeOutputMixer(audioContext)
 	const osc = audioContext.createOscillator()
 	const noise = audioContext.createBufferSource()
 

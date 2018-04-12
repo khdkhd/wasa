@@ -1,3 +1,7 @@
+/**
+ * WaveForms provides a hash of constants for oscillator type assignation
+ * @type {Object}
+ */
 export const WaveForms = Object.freeze({
 	SQUARE: 'square',
 	SAWTOOTH: 'sawtooth',

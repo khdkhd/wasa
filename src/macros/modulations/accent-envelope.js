@@ -1,7 +1,7 @@
 import { isNil } from 'ramda'
 import { mandatory } from '../../common/utils'
 
-export const AccentEnvelope = (audioContext = mandatory()) => {
+export const createAccentEnvelope = (audioContext = mandatory()) => {
 	let attackTime = 0
 	let decayTime = 0
 	let accentValue = 0
