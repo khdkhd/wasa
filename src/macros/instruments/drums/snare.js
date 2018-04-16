@@ -1,7 +1,7 @@
-import { NodeOutputMixer } from '../../routing/node-output-mixer'
+import { createNodeOutputMixer } from '../../routing/node-output-mixer'
 import { FilterTypes } from '../../../constants/filter-types'
 
-export const Snare = (audioContext) => {
+export const createSnare = (audioContext) => {
 	const bufferSize = 2 * audioContext.sampleRate
 	const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate)
 	const o = noiseBuffer.getChannelData(0)
@@ -13,7 +13,7 @@ export const Snare = (audioContext) => {
 	const noiseGain = audioContext.createGain()
 	const noiseFilter = audioContext.createBiquadFilter()
 	const oscGain = audioContext.createGain()
-	const nodeMixer = NodeOutputMixer(audioContext)
+	const nodeMixer = createNodeOutputMixer(audioContext)
 	const osc = audioContext.createOscillator()
 	const noise = audioContext.createBufferSource()
 
@@ -38,7 +38,7 @@ export const Snare = (audioContext) => {
 
 	osc.connect(oscGain)
 	noise.connect(noiseFilter).connect(noiseGain)
-	nodeMixer.setLeftInput(noiseGain)
+	nodeMixer.setLeftInput(oscGain)
 	nodeMixer.setRightInput(noiseGain)
 	nodeMixer.connect({ getInput: () => output })
 
@@ -50,7 +50,7 @@ export const Snare = (audioContext) => {
 			osc.frequency.setValueAtTime(frequency, time)
 			oscGain.gain.setValueAtTime(velocity, time)
 			noiseGain.gain.setValueAtTime(velocity, time)
-			osc.frequency.exponentialRampToValueAtTime(frequency / 2, time + 0.15)
+			osc.frequency.exponentialRampToValueAtTime(frequency / 10, time + 0.15)
 			oscGain.gain.exponentialRampToValueAtTime(1E-10, time + 0.15)
 			noiseGain.gain.exponentialRampToValueAtTime(1E-10, time + duration)
 		},

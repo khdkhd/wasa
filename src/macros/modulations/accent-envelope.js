@@ -1,7 +1,7 @@
 import { isNil } from 'ramda'
 import { mandatory } from '../../common/utils'
 
-export const AccentEnvelope = (audioContext = mandatory()) => {
+export const createAccentEnvelope = (audioContext = mandatory()) => {
 	let attackTime = 0
 	let decayTime = 0
 	let accentValue = 0
@@ -20,9 +20,10 @@ export const AccentEnvelope = (audioContext = mandatory()) => {
 	return {
 		connect(audioParam = mandatory()) {
 			parameter = audioParam
+			sustainValue = parameter.value
 			return this
 		},
-		trigger(time = audioContext.currentTime) {
+		on(time = audioContext.currentTime) {
 			assertMandatoryParameter()
 			if (isActive) {
 				peakValue = sustainValue + accentValue
@@ -31,7 +32,7 @@ export const AccentEnvelope = (audioContext = mandatory()) => {
 				parameter.exponentialRampToValueAtTime(sustainValue, time + attackTime + decayTime)
 			}
 		},
-		disconnect(time = audioContext.currentTime) {
+		off(time = audioContext.currentTime) {
 			assertMandatoryParameter()
 			if (isActive) {
 				parameter.setValueAtTime(sustainValue, time)

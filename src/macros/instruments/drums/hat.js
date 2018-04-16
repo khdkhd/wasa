@@ -2,7 +2,7 @@ import { mandatory } from '../../../common/utils'
 import { FilterTypes } from '../../../constants/filter-types'
 import { WaveForms } from '../../../constants/wave-forms'
 
-export const Hat = (audioContext = mandatory('audioContext')) => {
+export const createHat = (audioContext = mandatory('audioContext')) => {
 	const output = audioContext.createGain()
 	const gate = audioContext.createGain()
 	const bandpassFilter = audioContext.createBiquadFilter()
@@ -21,7 +21,7 @@ export const Hat = (audioContext = mandatory('audioContext')) => {
 		.connect(output)
 
 	bandpassFilter.type = FilterTypes.BAND_PASS
-	bandpassFilter.frequency.value = 9000
+	bandpassFilter.frequency.value = 8000
 	highpassFilter.type = FilterTypes.HIGH_PASS
 	highpassFilter.frequency.value = 9000
 
