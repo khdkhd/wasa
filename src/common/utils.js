@@ -11,12 +11,17 @@ export const createRandomWaveForm = (audioContext = mandatory(), complexity = 8)
 	return audioContext.createPeriodicWave(r, i)
 }
 
-export const setWaveForm = (waveForm, osc) => {
-  if (waveForm === WaveForms.RANDOM) {
-    osc.setPeriodicWave(randomWaveForm(audioContext))
-  } else {
-    osc.type = waveForm
+export const createGenerator = (audioContext, waveForm) => {
+  if (waveForm === WaveForms.WHITE_NOISE) {
+    return createNoiseBuffer(audioContext)
   }
+  const osc = audioContext.createOscillator()
+  if (waveForm === WaveForms.RANDOM) {
+    osc.setPeriodicWave(createRandomWaveForm(audioContext))
+    return osc
+  }
+  osc.type = waveForm
+  return osc
 }
 
 export const createNoiseBuffer = (audioContext = mandatory()) => {

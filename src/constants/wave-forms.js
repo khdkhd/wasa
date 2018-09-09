@@ -8,4 +8,5 @@ export const WaveForms = Object.freeze({
 	TRIANGLE: 'triangle',
 	SINE: 'sine',
 	RANDOM: 'random',
+	WHITE_NOISE: 'white_noise',
 })
