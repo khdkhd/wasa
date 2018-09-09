@@ -1,4 +1,5 @@
 import { times } from 'ramda'
+import { WaveForms } from '../constants/wave-forms'
 
 export const mandatory = (parameterName = '') => {
 	throw new Error(`Missing mandatory parameter ${parameterName}`)
@@ -8,6 +9,14 @@ export const createRandomWaveForm = (audioContext = mandatory(), complexity = 8)
 	const i = Float32Array.from(times(Math.random, complexity))
 	const r = Float32Array.from(times(Math.random, complexity))
 	return audioContext.createPeriodicWave(r, i)
+}
+
+export const setWaveForm = (waveForm, osc) => {
+  if (waveForm === WaveForms.RANDOM) {
+    osc.setPeriodicWave(randomWaveForm(audioContext))
+  } else {
+    osc.type = waveForm
+  }
 }
 
 export const createNoiseBuffer = (audioContext = mandatory()) => {
