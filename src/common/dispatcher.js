@@ -8,16 +8,29 @@ export const Events = Object.freeze({
 	CHANGE: 999,
 })
 
+const ids = function*() {
+  let i = 0
+  for (; ;) {
+    yield ++i
+  }
+}()
+
 export const Dispatcher = (() => {
 	const subject = new Subject()
 	return {
-		dispatch(type, data) {
-			subject.next({ type, data })
-		},
-		as(type) {
-			return subject
-				.filter(action => action.type === type)
-				.map(action => action.data)
+		openSession() {
+			const id = ids.next()
+			return {
+        dispatch(type, data) {
+          subject.next({ type, data, id })
+        },
+        as(type) {
+          return subject
+					.filter(action => action.id !== id)
+          .filter(action => action.type === type)
+          .map(action => action.data)
+        },
+			}
 		},
 	}
 })()
