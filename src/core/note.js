@@ -1,4 +1,4 @@
-import { isNil } from 'ramda'
+import { isNil } from 'ramda';
 /**
  * @typedef {Object} Note
  * @property {string} pitchClass - The pitch in chromatic scale (english notation)
@@ -10,7 +10,7 @@ import { isNil } from 'ramda'
  * 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'
  * @type {Object}
  */
-export const pitchClasses = Object.freeze(['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'])
+export const pitchClasses = Object.freeze(['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']);
 
 /**
  * Computes the frequency value of the given midi note
@@ -24,12 +24,12 @@ export const pitchClasses = Object.freeze(['C', 'C#', 'D', 'D#', 'E', 'F', 'F#',
  */
 export function midiToFrequency(tuning = 440, midiValue) {
 	if (isNil(midiValue)) {
-		return _ => midiToFrequency(tuning, _)
+		return _ => midiToFrequency(tuning, _);
 	}
 	if (midiValue >= 0 && midiValue <= 127) {
-		return tuning * (2 ** ((midiValue - 69) / 12))
+		return tuning * (2 ** ((midiValue - 69) / 12));
 	}
-	return null
+	return null;
 }
 
 /**
@@ -38,7 +38,7 @@ export function midiToFrequency(tuning = 440, midiValue) {
  * @param {number} octave - Octave value for note
  */
 export function symbolToMidi(pitchClass, octave) {
-	return ((octave + 1) * 12) + pitchClasses.indexOf(pitchClass)
+	return ((octave + 1) * 12) + pitchClasses.indexOf(pitchClass);
 }
 
 /**
@@ -47,12 +47,12 @@ export function symbolToMidi(pitchClass, octave) {
  * @returns {Note}
  */
 export function midiToSymbol(midiValue) {
-	const pitchClassIndex = (midiValue - (12 * 2)) % 12
-	const octave = (midiValue - pitchClassIndex - 12) / 12
+	const pitchClassIndex = (midiValue - (12 * 2)) % 12;
+	const octave = (midiValue - pitchClassIndex - 12) / 12;
 	return {
 		pitchClass: pitchClasses[pitchClassIndex],
 		octave,
-	}
+	};
 }
 
 /**
@@ -62,17 +62,17 @@ export function midiToSymbol(midiValue) {
  * This curry function will be partially applied if tuning
  * is the only parameter
  * @param {number} tuning - The frequency associated to midi value 69 (A4)
- * @param {number} midiValue - Midi value (0 to 127) of the note
+ * @param {number} frequency - Frequency of the note in HZ
  * @returns {number|function} The computed frequency or a computing function
  */
 export function frequencyToMidi(tuning = 440, frequency) {
 	if (isNil(frequency)) {
-		return _ => frequencyToMidi(tuning, _)
+		return _ => frequencyToMidi(tuning, _);
 	}
 	if (frequency >= 8 && frequency < 3952) {
-		return 69 + (12 * Math.log2(frequency / tuning))
+		return 69 + (12 * Math.log2(frequency / tuning));
 	}
-	return null
+	return null;
 }
 
 
@@ -82,7 +82,7 @@ export function frequencyToMidi(tuning = 440, frequency) {
  * @param {number} octave - Octave value for note
  */
 export function symbolToFrequency(pitchClass, octave) {
-	return 	midiToFrequency(440, symbolToMidi(pitchClass, octave))
+	return 	midiToFrequency(440, symbolToMidi(pitchClass, octave));
 }
 
 /**
@@ -90,5 +90,5 @@ export function symbolToFrequency(pitchClass, octave) {
  * @param {number} frequency - Octave value for note
  */
 export function frequencyToSymbol(frequency) {
-	return midiToSymbol(frequencyToMidi(440, frequency))
+	return midiToSymbol(frequencyToMidi(440, frequency));
 }

@@ -9,4 +9,4 @@ export const FilterTypes = Object.freeze({
 	LOW_SHELF: 'lowshelf',
 	HIGH_SHELF: 'highshelf',
 	ALL_PASS: 'allpass',
-})
+});
