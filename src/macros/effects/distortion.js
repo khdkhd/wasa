@@ -1,7 +1,6 @@
 import * as R from 'ramda';
 
 export function createDistortion(audioContext) {
-
 	const makeDistortionCurve = (amount) => {
 		const { sampleRate } = audioContext;
 		const curve = new Float32Array(sampleRate);
@@ -19,7 +18,7 @@ export function createDistortion(audioContext) {
 	const postGain = audioContext.createGain();
 	const dist = audioContext.createWaveShaper();
 	preGain.connect(dist).connect(postGain);
-	dist.curve = makeDistortionCurve(1	);
+	dist.curve = makeDistortionCurve(1);
 	dist.oversample = '4x';
 	preGain.gain.value = 50;
 	postGain.gain.value = 0.8;
