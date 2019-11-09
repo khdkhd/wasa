@@ -1,21 +1,21 @@
-import * as R from 'ramda'
-import { createBassDrum } from './drums/bass-drum'
-import { createSnare } from '../../macros/instruments/drums/snare'
-import { createHat } from '../../macros/instruments/drums/hat'
-import { mandatory, wrapNode } from '../../common/utils'
+import * as R from 'ramda';
+import { createBassDrum } from './drums/bass-drum';
+import { createSnare } from '../../macros/instruments/drums/snare';
+import { createHat } from '../../macros/instruments/drums/hat';
+import { mandatory, wrapNode } from '../../common/utils';
 
-export const GMDrumSynth = (audioContext = mandatory('audioContext')) => {
-	const bd = createBassDrum(audioContext).setDurationValue(0.1)
-	const sn = createSnare(audioContext).setDurationValue(0.5)
-	const hi = createHat(audioContext).setDurationValue(0.1)
-	const hat = createHat(audioContext).setDurationValue(0.5)
+export function GMDrumSynth(audioContext = mandatory('audioContext')) {
+	const bd = createBassDrum(audioContext).setDurationValue(0.1);
+	const sn = createSnare(audioContext).setDurationValue(0.5);
+	const hi = createHat(audioContext).setDurationValue(0.1);
+	const hat = createHat(audioContext).setDurationValue(0.5);
 
-	const output = wrapNode(audioContext.createGain())
+	const output = wrapNode(audioContext.createGain());
 
-	bd.connect(output)
-	sn.connect(output)
-	hi.connect(output)
-	hat.connect(output)
+	bd.connect(output);
+	sn.connect(output);
+	hi.connect(output);
+	hat.connect(output);
 
 	return {
 		noteOn(midiValue, velocity, time = audioContext.currentTime) {
@@ -46,9 +46,10 @@ export const GMDrumSynth = (audioContext = mandatory('audioContext')) => {
 				],
 				[
 					R.T,
-					() => {},
+					() => {
+					},
 				],
-			])(midiValue)
+			])(midiValue);
 		},
 		noteOff(midiValue, time = audioContext.currentTime) {
 			R.cond([
@@ -62,13 +63,14 @@ export const GMDrumSynth = (audioContext = mandatory('audioContext')) => {
 				],
 				[
 					R.T,
-					() => {},
+					() => {
+					},
 				],
-			])(midiValue)
+			])(midiValue);
 		},
 		connect({ connect, getInput }) {
-			output.connect({ getInput })
-			return { connect }
+			output.connect({ getInput });
+			return { connect };
 		},
-	}
+	};
 }

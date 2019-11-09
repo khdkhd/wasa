@@ -1,2 +1,2 @@
-export * from './sequencer'
-export * from './note'
+export * from './sequencer';
+export * from './note';

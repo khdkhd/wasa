@@ -1,5 +1,5 @@
-export const NoopInstrument = (audioContext) => {
-	const output = audioContext.createGain()
+export function NoopInstrument(audioContext) {
+	const output = audioContext.createGain();
 
 	return {
 		noteOn() {
@@ -9,8 +9,8 @@ export const NoopInstrument = (audioContext) => {
 
 		},
 		connect({ connect, getInput }) {
-			output.connect(getInput())
-			return { connect }
+			output.connect(getInput());
+			return { connect };
 		},
-	}
+	};
 }

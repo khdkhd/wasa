@@ -1,17 +1,17 @@
-const path = require('path')
-const CleanPlugin = require('clean-webpack-plugin')
+const path = require('path');
+const CleanPlugin = require('clean-webpack-plugin');
 // const webpack = require('webpack')
 
 function isProd(env) {
-	return env === 'prod'
+	return env === 'prod';
 }
 
 function getPluginConfig(env) {
-	const plugins = []
+	const plugins = [];
 	if (isProd(env)) {
-		plugins.push(new CleanPlugin(['dist']))
+		plugins.push(new CleanPlugin(['dist']));
 	}
-	return plugins
+	return plugins;
 }
 
 const config = env => ({
@@ -65,6 +65,6 @@ const config = env => ({
 			amd: 'rxjs',
 		},
 	},
-})
+});
 
-module.exports = config
+module.exports = config;

@@ -9,4 +9,4 @@ export const WaveForms = Object.freeze({
 	SINE: 'sine',
 	RANDOM: 'random',
 	WHITE_NOISE: 'white_noise',
-})
+});
