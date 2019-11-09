@@ -9,9 +9,7 @@ export const Events = Object.freeze({
 });
 
 
-
 export const Dispatcher = (() => {
-	console.log('create dispatcher');
 	const subject = new Subject();
 
 	return {
@@ -23,5 +21,5 @@ export const Dispatcher = (() => {
 				.filter(action => action.type === type)
 				.map(action => action.data);
 		},
-	}
+	};
 })();
