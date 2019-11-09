@@ -17,7 +17,7 @@
     "import/no-unresolved": ["error", { "ignore": ["@*"] }],
     "indent": ["error", "tab"],
     "no-tabs": 0,
-    "semi": ["error", "never"],
+    "semi": ["error", "always"],
     "yoda": "off"
   },
   "globals": {

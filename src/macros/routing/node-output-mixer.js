@@ -1,50 +1,50 @@
-import { mandatory } from '../../common/utils'
+import { mandatory } from '../../common/utils';
 
 export const createNodeOutputMixer = (audioContext = mandatory()) => {
 	/* web audio nodes */
-	const outputGainNode = audioContext.createGain()
-	const leftGainNode = audioContext.createGain()
-	const rightGainNode = audioContext.createGain()
+	const outputGainNode = audioContext.createGain();
+	const leftGainNode = audioContext.createGain();
+	const rightGainNode = audioContext.createGain();
 
 	/* constant values */
-	const MIDDLE_GAIN_VALUE = 0.5
+	const MIDDLE_GAIN_VALUE = 0.5;
 
 	/* parameter values */
-	let fadeValue = 0
+	let fadeValue = 0;
 
 	/* routing */
-	leftGainNode.connect(outputGainNode)
-	rightGainNode.connect(outputGainNode)
-	leftGainNode.gain.value = MIDDLE_GAIN_VALUE
-	rightGainNode.gain.value = MIDDLE_GAIN_VALUE
+	leftGainNode.connect(outputGainNode);
+	rightGainNode.connect(outputGainNode);
+	leftGainNode.gain.value = MIDDLE_GAIN_VALUE;
+	rightGainNode.gain.value = MIDDLE_GAIN_VALUE;
 
 	return {
 		setFadeValue(value) {
-			leftGainNode.gain.value = MIDDLE_GAIN_VALUE - (value * MIDDLE_GAIN_VALUE)
-			rightGainNode.gain.value = MIDDLE_GAIN_VALUE + (value * MIDDLE_GAIN_VALUE)
-			fadeValue = value
-			return this
+			leftGainNode.gain.value = MIDDLE_GAIN_VALUE - (value * MIDDLE_GAIN_VALUE);
+			rightGainNode.gain.value = MIDDLE_GAIN_VALUE + (value * MIDDLE_GAIN_VALUE);
+			fadeValue = value;
+			return this;
 		},
 		getFadeValue() {
-			return fadeValue
+			return fadeValue;
 		},
 		setLeftInput(audioNode) {
-			audioNode.connect(leftGainNode)
-			return this
+			audioNode.connect(leftGainNode);
+			return this;
 		},
 		setRightInput(audioNode) {
-			audioNode.connect(rightGainNode)
-			return this
+			audioNode.connect(rightGainNode);
+			return this;
 		},
 		connect({ connect, getInput }) {
-			outputGainNode.connect(getInput())
-			return { connect }
+			outputGainNode.connect(getInput());
+			return { connect };
 		},
 		getLeftGainNode() {
-			return leftGainNode
+			return leftGainNode;
 		},
 		getRightGainNode() {
-			return rightGainNode
+			return rightGainNode;
 		},
-	}
-}
+	};
+};

@@ -1,2 +1,2 @@
-export * from './wave-forms'
-export * from './filter-types'
+export * from './wave-forms';
+export * from './filter-types';

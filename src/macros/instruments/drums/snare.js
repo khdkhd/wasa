@@ -1,106 +1,106 @@
-import { createNodeOutputMixer } from '../../routing/node-output-mixer'
-import { FilterTypes } from '../../../constants/filter-types'
+import { createNodeOutputMixer } from '../../routing/node-output-mixer';
+import { FilterTypes } from '../../../constants/filter-types';
 
-export const createSnare = (audioContext) => {
-	const bufferSize = 2 * audioContext.sampleRate
-	const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate)
-	const o = noiseBuffer.getChannelData(0)
+export function createSnare(audioContext) {
+	const bufferSize = 2 * audioContext.sampleRate;
+	const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+	const o = noiseBuffer.getChannelData(0);
 	for (let i = 0; i < bufferSize; i += 1) {
-		o[i] = (Math.random() * 2) - 1
+		o[i] = (Math.random() * 2) - 1;
 	}
 
-	const output = audioContext.createGain()
-	const noiseGain = audioContext.createGain()
-	const noiseFilter = audioContext.createBiquadFilter()
-	const oscGain = audioContext.createGain()
-	const nodeMixer = createNodeOutputMixer(audioContext)
-	const osc = audioContext.createOscillator()
-	const noise = audioContext.createBufferSource()
+	const output = audioContext.createGain();
+	const noiseGain = audioContext.createGain();
+	const noiseFilter = audioContext.createBiquadFilter();
+	const oscGain = audioContext.createGain();
+	const nodeMixer = createNodeOutputMixer(audioContext);
+	const osc = audioContext.createOscillator();
+	const noise = audioContext.createBufferSource();
 
-	let duration = 0.25
-	let frequency = 80
-	let oscMixValue = 0.2
-	let noiseFilterValue = 4000
+	let duration = 0.25;
+	let frequency = 80;
+	let oscMixValue = 0.2;
+	let noiseFilterValue = 4000;
 
-	const real = new Float32Array([0, 0, 1, 0, 1])
-	const imaginary = new Float32Array([0, 1, 0, 0, 0])
-	const customWave = audioContext.createPeriodicWave(real, imaginary)
+	const real = new Float32Array([0, 0, 1, 0, 1]);
+	const imaginary = new Float32Array([0, 1, 0, 0, 0]);
+	const customWave = audioContext.createPeriodicWave(real, imaginary);
 
-	noiseFilter.type = FilterTypes.BAND_PASS
-	noiseFilter.frequency.value = noiseFilterValue
-	osc.frequency.value = frequency
-	oscGain.gain.value = 1E-10
-	noiseGain.gain.value = 1E-10
-	noise.buffer = noiseBuffer
-	noise.loop = true
+	noiseFilter.type = FilterTypes.BAND_PASS;
+	noiseFilter.frequency.value = noiseFilterValue;
+	osc.frequency.value = frequency;
+	oscGain.gain.value = 1E-10;
+	noiseGain.gain.value = 1E-10;
+	noise.buffer = noiseBuffer;
+	noise.loop = true;
 
-	osc.setPeriodicWave(customWave)
+	osc.setPeriodicWave(customWave);
 
-	osc.connect(oscGain)
-	noise.connect(noiseFilter).connect(noiseGain)
-	nodeMixer.setLeftInput(oscGain)
-	nodeMixer.setRightInput(noiseGain)
-	nodeMixer.connect({ getInput: () => output })
+	osc.connect(oscGain);
+	noise.connect(noiseFilter).connect(noiseGain);
+	nodeMixer.setLeftInput(oscGain);
+	nodeMixer.setRightInput(noiseGain);
+	nodeMixer.connect({ getInput: () => output });
 
-	osc.start(audioContext.currentTime)
-	noise.start(audioContext.currentTime)
+	osc.start(audioContext.currentTime);
+	noise.start(audioContext.currentTime);
 
 	return {
 		noteOn(velocity = 1, time = audioContext.currentTime) {
-			osc.frequency.setValueAtTime(frequency, time)
-			oscGain.gain.setValueAtTime(velocity, time)
-			noiseGain.gain.setValueAtTime(velocity, time)
-			osc.frequency.exponentialRampToValueAtTime(frequency / 10, time + 0.15)
-			oscGain.gain.exponentialRampToValueAtTime(1E-10, time + 0.15)
-			noiseGain.gain.exponentialRampToValueAtTime(1E-10, time + duration)
+			osc.frequency.setValueAtTime(frequency, time);
+			oscGain.gain.setValueAtTime(velocity, time);
+			noiseGain.gain.setValueAtTime(velocity, time);
+			osc.frequency.exponentialRampToValueAtTime(frequency / 10, time + 0.15);
+			oscGain.gain.exponentialRampToValueAtTime(1E-10, time + 0.15);
+			noiseGain.gain.exponentialRampToValueAtTime(1E-10, time + duration);
 		},
 		noteOff(time = audioContext.currentTime + duration) {
-			osc.frequency.cancelScheduledValues(time)
-			oscGain.gain.cancelScheduledValues(time)
-			noiseGain.gain.cancelScheduledValues(time)
-			noiseGain.gain.exponentialRampToValueAtTime(1E-10, time)
-			oscGain.gain.exponentialRampToValueAtTime(1E-10, time)
+			osc.frequency.cancelScheduledValues(time);
+			oscGain.gain.cancelScheduledValues(time);
+			noiseGain.gain.cancelScheduledValues(time);
+			noiseGain.gain.exponentialRampToValueAtTime(1E-10, time);
+			oscGain.gain.exponentialRampToValueAtTime(1E-10, time);
 		},
 		connect({ connect, getInput }) {
-			output.connect(getInput())
-			return { connect }
+			output.connect(getInput());
+			return { connect };
 		},
 		setDurationValue(value) {
-			duration = value
-			return this
+			duration = value;
+			return this;
 		},
 		getDurationValue() {
-			return duration
+			return duration;
 		},
 		setFrequencyValue(value) {
-			frequency = value
-			return this
+			frequency = value;
+			return this;
 		},
 		getFrequencyValue() {
-			return frequency
+			return frequency;
 		},
 		setOscMixValue(value) {
-			oscMixValue = value
-			nodeMixer.setFadeValue(oscMixValue)
-			return this
+			oscMixValue = value;
+			nodeMixer.setFadeValue(oscMixValue);
+			return this;
 		},
 		getOscMixValue() {
-			return oscMixValue
+			return oscMixValue;
 		},
 		setNoiseFilterValue(value) {
-			noiseFilterValue = value
-			noiseFilter.frequency.value = value
-			return this
+			noiseFilterValue = value;
+			noiseFilter.frequency.value = value;
+			return this;
 		},
 		getNoiseFilterValue() {
-			return noiseFilterValue
+			return noiseFilterValue;
 		},
 		setOutputGainValue(value) {
-			output.gain.value = value
-			return this
+			output.gain.value = value;
+			return this;
 		},
 		getOutputGainValue() {
-			return output.gain.value
+			return output.gain.value;
 		},
-	}
+	};
 }
